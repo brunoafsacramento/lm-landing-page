@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LM Contabilidade | Especialistas em Gestão Contábil Premium</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="LM Contabilidade - Soluções contábeis exclusivas para MEIs, PMEs e Profissionais Liberais. Transformando burocracia em estratégia.">
+    <meta name="keywords" content="contabilidade, LM Contabilidade, Lucas Marcelino, abertura de empresa, planejamento tributário, MEI, PME">
+    
+    <!-- Google Fonts: Playfair Display + DM Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Icons (Feather or FontAwesome alternative) -->
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body class="bg-[#131313] text-[#E5E2E1] font-dm-sans selection:bg-[#E8C46B] selection:text-[#131313]">
+
+    <!-- 1. HEADER (Fixed) -->
+    <header class="header fixed top-0 w-full z-50 transition-all duration-300">
+        <nav class="container mx-auto px-6 h-28 flex justify-between items-center">
+            <a href="#home" class="logo flex items-center">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGUAAABBCAYAAADIQWrvAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAh1AAAIdQB1ttWeQAAAYdpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0n77u/JyBpZD0nVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkJz8+DQo8eDp4bXBtZXRhIHhtbG5zOng9ImFkb2JlOm5zOm1ldGEvIj48cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPjxyZGY6RGVzY3JpcHRpb24 rdrdfOmFib3V0PSJ1dWlkOmZhZjViZGQ1LWJhM2QtMTFkYS1hZDMxLWQzM2Q3NTE4MmYxYiIgeG1sbnM6dGlmZj0iaHR0cDovL25zLmFkb2JlLmNvbS90aWZmLzEuMC8iPjx0aWZmOk9yaWVudGF0aW9uPjE8L3RpZmY6T3JpZW50YXRpb24+PC9yZGY6RGVzY3JpcHRpb24+PC9yZGY6UkRGPjwveDp4bXBtZXRhPg0KPD94cGFja2V0IGVuZD0ndyc/PiyUmAsAABXSSURBVHhe7Zx5nFTFtcd/p+ouvUz3MBszwCAQ3EAxivsGwUjciPmoDCqICCIycUl8viQvn7xPRrJ8XhYFowJBAy6IRtCnIQlCjCwuEXEh5hn1GX2igMCszNZ9t6rz/rjdPT3NDOonMvN5z/n+AT1Vp25V33OrTtU55zYwwAADDPB/EiosOJS89vj0EVWVsZ8JTYYfcCeBAgDQ0BAQ0KQJDAYAaAGSZIEoligyLNb8WOmpS1YVXvPz4MZv1dbEI9GL0q6rBMAASAMgEEkh4oZhRjzP/dWdd96zsbDtoaBPlfLuutkVg0ojt0ZMeW6iKHYiIOG4fjgIIhAzmABohl0UQVtzJwKtNkLQ32IR83fRcXdsLrzmP8uUKVNix315zPaKsrIjHdcHCGDWMKQACYnWtrZ3WPGfHCd93x133PVmYftDQZ8qJZ/6l2ovNy1rqfL0oEBpBkRWIVQUNclRapvjufOGn73sjcK2nyc33VT7tYqK8vWBVsQaGsRERLAMk5qbW3+0cOGdPwHgF7Y7lIjCgr5i8OlLH1O+uj0et4hJEINBYJiGJKV1qtNpqz3UCgGAZDJxmWWbBM1MYIA127ZFjuNuWbjwzrq+Vgj6UykAoJTa3Jn2WAoiAsAM2LYBz/f+sWHVA/9VKP95M3Xq1AopxNf9wAeDGWAQQJIEDCE2Fcr3Ff2qlPq9Tb4faEUkAArXUikIMMyW6+899E/o8JHDLhDSGOK7gQNBgkEgEtBKobG5vlC8z+hXpQTkUbjbyW65CKwB2UeWrigamwnojcy8w5ASAKA5HIsQVr/dm37rGAACpYmhiAAQh/+QAJhDFR1Krr9+9lhJdJrTmXqACL4kgXA3DEASBpUmC5v0Gf2qFEMKBgSDAQr3ouGcYe5trtDntWMsLS+fJgxZv33b2887jh8HMcAMAkG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" alt="LM Contabilidade" class="h-12 w-auto">
+            </a>
+            
+            <!-- Desktop Menu (Centralized) -->
+            <ul class="hidden lg:flex space-x-12 text-[11px] font-bold uppercase tracking-[0.2em] text-[#D0C5B2] transition-all">
+                <li><a href="#servicos" class="hover:text-[#E8C46B] transition-colors">Serviços</a></li>
+                <li><a href="#para-quem" class="hover:text-[#E8C46B] transition-colors">Para quem é</a></li>
+                <li><a href="#planos" class="hover:text-[#E8C46B] transition-colors">Planos</a></li>
+                <li><a href="#depoimentos" class="hover:text-[#E8C46B] transition-colors">Depoimentos</a></li>
+            </ul>
+            
+            <!-- Actions -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#" class="text-[#D0C5B2] hover:text-[#E8C46B] text-[10px] font-bold uppercase tracking-[0.2em] transition-all">Portal</a>
+                <a href="#contato" class="cta-btn bg-[#E8C46B] text-[#131313] px-8 py-3 rounded-sm font-bold text-[10px] uppercase tracking-[0.2em] hover:brightness-110 transition-all shadow-xl shadow-[#E8C46B]/10">Fale conosco ↗</a>
+            </div>
+            
+            <!-- Mobile Menu Toggle -->
+            <button class="md:hidden text-[#E8C46B]" id="menu-toggle">
+                <i data-feather="menu"></i>
+            </button>
+        </nav>
+        
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden absolute top-28 left-0 w-full bg-[#131313]/95 backdrop-blur-xl p-8 border-b border-[#E8C46B]/20">
+            <ul class="space-y-6 text-center text-sm uppercase tracking-widest font-bold">
+                <li><a href="#servicos" class="mobile-link">Serviços</a></li>
+                <li><a href="#para-quem" class="mobile-link">Para quem é</a></li>
+                <li><a href="#planos" class="mobile-link">Planos</a></li>
+                <li><a href="#depoimentos" class="mobile-link">Depoimentos</a></li>
+                <li><a href="#" class="mobile-link text-[#E8C46B]">Acessar Portal</a></li>
+                <li><a href="#contato" class="mobile-link">Contato</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <!-- 2. HERO SECTION -->
+        <section id="home" class="hero relative h-screen w-full flex items-center overflow-hidden">
+            <!-- Video Background Container -->
+            <div class="absolute inset-0 z-0">
+                <!-- Se o vídeo não existir, ele usará o fundo preto com gradiente -->
+                <video id="hero-video" class="w-full h-full object-cover opacity-60" autoplay muted loop playsinline>
+                    <source src="hero-bg.mp4" type="video/mp4">
+                    <!-- Fallback se o vídeo falhar -->
+                </video>
+                <div class="absolute inset-0 bg-gradient-to-r from-[#131313] via-[#131313]/90 to-transparent z-10"></div>
+            </div>
+            
+            <div class="container mx-auto px-6 relative z-20">
+                <div class="max-w-3xl reveal-up">
+                    <span class="inline-block border-l-2 border-[#E8C46B] pl-4 mb-6 font-medium text-sm tracking-[0.3em] uppercase text-[#D0C5B2]">Contabilidade Inteligente para o seu negócio</span>
+                    <h1 class="font-playfair text-6xl md:text-8xl leading-none mb-8">Contabilidade que <span class="italic text-[#E8C46B]">impulsiona</span> seu negócio</h1>
+                    <p class="font-dm-sans text-xl md:text-2xl text-[#D0C5B2] mb-12 max-w-xl leading-relaxed">
+                        Cuidamos de toda a parte contábil, fiscal e trabalhista para você focar no que realmente importa: o crescimento da sua empresa.
+                    </p>
+                    
+                    <div class="cta-form flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <input type="email" placeholder="Seu melhor e-mail" class="bg-transparent border-b border-[#D0C5B2] py-4 px-2 w-full sm:w-80 outline-none focus:border-[#E8C46B] transition-all text-lg">
+                        <button class="bg-[#E8C46B] text-[#131313] px-10 py-4 rounded-sm font-bold text-lg uppercase tracking-widest hover:brightness-110 transition-all">Quero uma consulta</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bounce Arrow -->
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+                <a href="#servicos" class="text-[#E8C46B]"><i data-feather="chevron-down" class="w-8 h-8"></i></a>
+            </div>
+        </section>
+
+        <!-- 3. SERVIÇOS -->
+        <section id="servicos" class="py-24 bg-[#131313]">
+            <div class="container mx-auto px-6">
+                <div class="mb-20 reveal-up">
+                    <span class="font-dm-sans text-[#E8C46B] text-xs tracking-[0.3em] uppercase mb-4 block">Especialidades</span>
+                    <h2 class="font-playfair text-4xl md:text-5xl">Serviços do Nosso <span class="italic font-light">Atelier Contábil</span></h2>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-[#E8C46B]/10">
+                    <!-- Card 1 -->
+                    <div class="service-card bg-[#1c1b1b] p-10 reveal-up">
+                        <i data-feather="briefcase" class="text-[#E8C46B] w-10 h-10 mb-6"></i>
+                        <h3 class="font-playfair text-2xl mb-4 text-[#E5E2E1]">Abertura de CNPJ</h3>
+                        <p class="text-[#D0C5B2] leading-relaxed">Inicie sua jornada empresarial com a estrutura societária ideal e planejamento tributário desde o primeiro dia.</p>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="service-card bg-[#1c1b1b] p-10 reveal-up">
+                        <i data-feather="refresh-cw" class="text-[#E8C46B] w-10 h-10 mb-6"></i>
+                        <h3 class="font-playfair text-2xl mb-4 text-[#E5E2E1]">Alteração e Migração</h3>
+                        <p class="text-[#D0C5B2] leading-relaxed">Traga sua empresa para a excelência com uma transição suave e eficiente, sem interrupções no seu negócio.</p>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="service-card bg-[#1c1b1b] p-10 reveal-up">
+                        <i data-feather="shield-check" class="text-[#E8C46B] w-10 h-10 mb-6"></i>
+                        <h3 class="font-playfair text-2xl mb-4 text-[#E5E2E1]">Regularização Fiscal</h3>
+                        <p class="text-[#D0C5B2] leading-relaxed">Colocamos sua situação fiscal em dia com inteligência e conformidade total perante os órgãos reguladores.</p>
+                    </div>
+                    <!-- Card 4 -->
+                    <div class="service-card bg-[#1c1b1b] p-10 reveal-up">
+                        <i data-feather="lock" class="text-[#E8C46B] w-10 h-10 mb-6"></i>
+                        <h3 class="font-playfair text-2xl mb-4 text-[#E5E2E1]">Baixa de Empresa</h3>
+                        <p class="text-[#D0C5B2] leading-relaxed">Encerramento de empresas sem pendências e com total transparência processual para sua tranquilidade.</p>
+                    </div>
+                    <!-- Card 5 -->
+                    <div class="service-card bg-[#1c1b1b] p-10 reveal-up">
+                        <i data-feather="file-text" class="text-[#E8C46B] w-10 h-10 mb-6"></i>
+                        <h3 class="font-playfair text-2xl mb-4 text-[#E5E2E1]">Imposto de Renda</h3>
+                        <p class="text-[#D0C5B2] leading-relaxed">Declaração de IRPF estratégica para alta renda e investidores, otimizando sua restituição ou reduzindo o imposto.</p>
+                    </div>
+                    <!-- Card 6 -->
+                    <div class="service-card bg-[#1c1b1b] p-10 reveal-up">
+                        <i data-feather="user" class="text-[#E8C46B] w-10 h-10 mb-6"></i>
+                        <h3 class="font-playfair text-2xl mb-4 text-[#E5E2E1]">Obrigações MEI</h3>
+                        <p class="text-[#D0C5B2] leading-relaxed">Suporte completo para o Microempreendedor Individual crescer organizado e cumprir todas as obrigações.</p>
+                    </div>
+                    <!-- Card 7 -->
+                    <div class="service-card bg-[#1c1b1b] p-10 reveal-up">
+                        <i data-feather="search" class="text-[#E8C46B] w-10 h-10 mb-6"></i>
+                        <h3 class="font-playfair text-2xl mb-4 text-[#E5E2E1]">Perícias Contábeis</h3>
+                        <p class="text-[#D0C5B2] leading-relaxed">Análise técnica detalhada e laudos periciais para processos judiciais ou resoluções extrajudiciais.</p>
+                    </div>
+                    <!-- Card 8 -->
+                    <div class="service-card bg-[#1c1b1b] p-10 reveal-up">
+                        <i data-feather="plus-circle" class="text-[#E8C46B] w-10 h-10 mb-6"></i>
+                        <h3 class="font-playfair text-2xl mb-4 text-[#E5E2E1]">Serviços Extras</h3>
+                        <p class="text-[#D0C5B2] leading-relaxed">Consultoria sob medida e serviços complementares para necessidades específicas do seu ecossistema.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. PARA QUEM É -->
+        <section id="para-quem" class="py-24 bg-[#0e0e0e]">
+            <div class="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                <div class="space-y-8 reveal-up">
+                    <h2 class="font-playfair text-4xl md:text-5xl leading-tight">Soluções desenhadas para o <span class="italic text-[#E8C46B]">seu momento</span></h2>
+                    <p class="text-xl text-[#D0C5B2] leading-relaxed">Não somos apenas contadores; somos parceiros estratégicos de diversos perfis de negócios.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-[#131313] p-8 border-l-2 border-[#E8C46B]/30 hover:border-[#E8C46B] transition-all">
+                            <h4 class="font-playfair text-xl mb-3">MEIs & Micro</h4>
+                            <p class="text-sm text-[#D0C5B2]">Gestão simplificada e eficaz para quem está começando com grandes ambições.</p>
+                        </div>
+                        <div class="bg-[#131313] p-8 border-l-2 border-[#E8C46B]/30 hover:border-[#E8C46B] transition-all">
+                            <h4 class="font-playfair text-xl mb-3">PMEs</h4>
+                            <p class="text-sm text-[#D0C5B2]">Escalabilidade com controle tributário rigoroso e suporte na tomada de decisões.</p>
+                        </div>
+                        <div class="bg-[#131313] p-8 border-l-2 border-[#E8C46B]/30 hover:border-[#E8C46B] transition-all">
+                            <h4 class="font-playfair text-xl mb-3">Profissionais Liberais</h4>
+                            <p class="text-sm text-[#D0C5B2]">Médicos, dentistas e advogados com tributação otimizada para sua área específica.</p>
+                        </div>
+                        <div class="bg-[#131313] p-8 border-l-2 border-[#E8C46B]/30 hover:border-[#E8C46B] transition-all">
+                            <h4 class="font-playfair text-xl mb-3">Caminhoneiros</h4>
+                            <p class="text-sm text-[#D0C5B2]">Contabilidade especializada para transportadores e autônomos das estradas.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-[#1c1b1b] p-12 md:p-16 relative overflow-hidden reveal-up">
+                    <div class="absolute -top-20 -right-20 w-64 h-64 bg-[#E8C46B]/5 rounded-full blur-3xl"></div>
+                    <div class="grid grid-cols-2 gap-y-16 gap-x-8">
+                        <div>
+                            <p class="font-playfair text-5xl text-[#E8C46B] mb-2">+500</p>
+                            <p class="font-dm-sans text-xs uppercase tracking-widest text-[#D0C5B2]">Empresas Atendidas</p>
+                        </div>
+                        <div>
+                            <p class="font-playfair text-5xl text-[#E8C46B] mb-2">98%</p>
+                            <p class="font-dm-sans text-xs uppercase tracking-widest text-[#D0C5B2]">Satisfação NPS</p>
+                        </div>
+                        <div>
+                            <p class="font-playfair text-5xl text-[#E8C46B] mb-2">10+</p>
+                            <p class="font-dm-sans text-xs uppercase tracking-widest text-[#D0C5B2]">Anos de Expertise</p>
+                        </div>
+                        <div>
+                            <p class="font-playfair text-5xl text-[#E8C46B] mb-2">24h</p>
+                            <p class="font-dm-sans text-xs uppercase tracking-widest text-[#D0C5B2]">Tempo Médio de Resposta</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- 5. PLANOS E PREÇOS -->
+        <section id="planos" class="py-24 bg-[#131313]">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-20 reveal-up">
+                    <h2 class="font-playfair text-4xl md:text-5xl mb-6">Investimento em <span class="italic text-[#E8C46B]">Tranquilidade</span></h2>
+                    <p class="text-[#D0C5B2] max-w-xl mx-auto">Planos desenhados para o momento atual do seu negócio, sem cobranças surpresas.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- MEI -->
+                    <div class="bg-[#1c1b1b] p-8 flex flex-col h-full border border-[#E8C46B]/10 hover:border-[#E8C46B]/30 transition-all reveal-up">
+                        <h3 class="font-dm-sans uppercase tracking-widest text-sm mb-6 text-[#E8C46B]">MEI</h3>
+                        <div class="flex items-baseline mb-8">
+                            <span class="text-sm text-[#D0C5B2] mr-1">R$</span>
+                            <span class="text-5xl font-playfair text-[#E5E2E1]">130</span>
+                            <span class="text-sm text-[#D0C5B2] ml-1">/mês</span>
+                        </div>
+                        <ul class="space-y-4 text-sm text-[#D0C5B2] flex-grow mb-10">
+                            <li class="flex items-center gap-2"><i data-feather="check" class="w-4 h-4 text-[#E8C46B]"></i> DAS Mensal</li>
+                            <li class="flex items-center gap-2"><i data-feather="check" class="w-4 h-4 text-[#E8C46B]"></i> Declaração Anual</li>
+                            <li class="flex items-center gap-2"><i data-feather="check" class="w-4 h-4 text-[#E8C46B]"></i> Suporte WhatsApp</li>
+                        </ul>
+                        <button class="w-full border border-[#E8C46B]/40 py-3 font-bold text-xs uppercase tracking-widest hover:bg-[#E8C46B] hover:text-[#131313] transition-all">Selecionar</button>
+                    </div>
+                    
+                    <!-- MEI Caminhoneiro -->
+                    <div class="bg-[#1c1b1b] p-8 flex flex-col h-full border border-[#E8C46B]/10 hover:border-[#E8C46B]/30 transition-all reveal-up">
+                        <h3 class="font-dm-sans uppercase tracking-widest text-sm mb-6 text-[#E8C46B]">MEI Caminhoneiro</h3>
+                        <div class="flex items-baseline mb-8">
+                            <span class="text-sm text-[#D0C5B2] mr-1">R$</span>
+                            <span class="text-5xl font-playfair text-[#E5E2E1]">170</span>
+                            <span class="text-sm text-[#D0C5B2] ml-1">/mês</span>
+                        </div>
+                        <ul class="space-y-4 text-sm text-[#D0C5B2] flex-grow mb-10">
+                            <li class="flex items-center gap-2"><i data-feather="check" class="w-4 h-4 text-[#E8C46B]"></i> Tudo do MEI</li>
+                            <li class="flex items-center gap-2"><i data-feather="check" class="w-4 h-4 text-[#E8C46B]"></i> Gestão de NF-e</li>
+                            <li class="flex items-center gap-2"><i data-feather="check" class="w-4 h-4 text-[#E8C46B]"></i> Suporte Especializado</li>
+                        </ul>
+                        <button class="w-full border border-[#E8C46B]/40 py-3 font-bold text-xs uppercase tracking-widest hover:bg-[#E8C46B] hover:text-[#131313] transition-all">Selecionar</button>
+                    </div>
+                    
+                    <!-- ME / EPP (HIGHLIGH) -->
+                    <div class="plan-card-popular bg-[#201f1f] p-8 flex flex-col h-full border-2 border-[#E8C46B] relative transform lg:scale-105 z-10 reveal-up">
+                        <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#E8C46B] text-[#131313] px-4 py-1 text-[10px] font-bold uppercase tracking-widest">Mais Popular</div>
+                        <h3 class="font-dm-sans uppercase tracking-widest text-sm mb-6 text-[#E8C46B]">ME / EPP</h3>
+                        <div class="flex items-baseline mb-8">
+                            <span class="text-sm text-[#D0C5B2] mr-1">R$</span>
+                            <span class="text-5xl font-playfair text-[#E5E2E1]">300</span>
+                            <span class="text-sm text-[#D0C5B2] ml-1">/mês</span>
+                        </div>
+                        <ul class="space-y-4 text-sm text-[#D0C5B2] flex-grow mb-10">
+                            <li class="flex items-center gap-2 font-bold text-[#E5E2E1]"><i data-feather="check" class="w-4 h-4 text-[#E8C46B]"></i> Contabilidade Completa</li>
+                            <li class="flex items-center gap-2"><i data-feather="check" class="w-4 h-4 text-[#E8C46B]"></i> Folha de Pagamento</li>
+                            <li class="flex items-center gap-2"><i data-feather="check" class="w-4 h-4 text-[#E8C46B]"></i> Balanço Mensal</li>
+                            <li class="flex items-center gap-2"><i data-feather="check" class="w-4 h-4 text-[#E8C46B]"></i> Planejamento Fiscal</li>
+                        </ul>
+                        <button class="w-full bg-[#E8C46B] text-[#131313] py-3 font-bold text-xs uppercase tracking-widest hover:brightness-110 transition-all">Contratar Agora</button>
+                    </div>
+                    
+                    <!-- ME / EPP Plus -->
+                    <div class="bg-[#1c1b1b] p-8 flex flex-col h-full border border-[#E8C46B]/10 hover:border-[#E8C46B]/30 transition-all reveal-up">
+                        <h3 class="font-dm-sans uppercase tracking-widest text-sm mb-6 text-[#E8C46B]">ME / EPP Plus</h3>
+                        <div class="flex items-baseline mb-8">
+                            <span class="text-sm text-[#D0C5B2] mr-1">R$</span>
+                            <span class="text-5xl font-playfair text-[#E5E2E1]">450</span>
+                            <span class="text-sm text-[#D0C5B2] ml-1">/mês</span>
+                        </div>
+                        <ul class="space-y-4 text-sm text-[#D0C5B2] flex-grow mb-10">
+                            <li class="flex items-center gap-2"><i data-feather="check" class="w-4 h-4 text-[#E8C46B]"></i> Tudo do ME / EPP</li>
+                            <li class="flex items-center gap-2"><i data-feather="check" class="w-4 h-4 text-[#E8C46B]"></i> Consultoria Ilimitada</li>
+                            <li class="flex items-center gap-2"><i data-feather="check" class="w-4 h-4 text-[#E8C46B]"></i> BPO Financeiro</li>
+                        </ul>
+                        <button class="w-full border border-[#E8C46B]/40 py-3 font-bold text-xs uppercase tracking-widest hover:bg-[#E8C46B] hover:text-[#131313] transition-all">Selecionar</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. DEPOIMENTOS -->
+        <section id="depoimentos" class="py-24 bg-[#0e0e0e]">
+            <div class="container mx-auto px-6">
+                <div class="mb-20 reveal-up">
+                    <span class="font-dm-sans text-[#E8C46B] text-xs tracking-[0.3em] uppercase mb-4 block">Experiências</span>
+                    <h2 class="font-playfair text-4xl md:text-5xl">O que dizem nossos <span class="italic text-[#E8C46B]">Parceiros</span></h2>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <!-- Depoimento 1 -->
+                    <div class="bg-[#131313] p-12 reveal-up">
+                        <div class="text-[#E8C46B] mb-8 flex space-x-1">
+                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                        </div>
+                        <p class="font-playfair text-xl italic text-[#E5E2E1] mb-10 leading-relaxed">
+                            "A LM transformou minha visão sobre contabilidade. Hoje tenho clareza total dos meus números e durmo tranquilo."
+                        </p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-[#E8C46B] flex items-center justify-center font-bold text-[#131313]">RS</div>
+                            <div>
+                                <p class="font-bold text-sm">Ricardo S.</p>
+                                <p class="text-xs text-[#D0C5B2] font-dm-sans uppercase tracking-widest">Tech Solutions</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Depoimento 2 -->
+                    <div class="bg-[#131313] p-12 reveal-up">
+                        <div class="text-[#E8C46B] mb-8 flex space-x-1">
+                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                        </div>
+                        <p class="font-playfair text-xl italic text-[#E5E2E1] mb-10 leading-relaxed">
+                            "Excelente suporte para quem é autônomo. O atendimento é rápido e sempre trazem soluções inteligentes."
+                        </p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-[#E8C46B] flex items-center justify-center font-bold text-[#131313]">AM</div>
+                            <div>
+                                <p class="font-bold text-sm">Ana M.</p>
+                                <p class="text-xs text-[#D0C5B2] font-dm-sans uppercase tracking-widest">Doceria AM</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Depoimento 3 -->
+                    <div class="bg-[#131313] p-12 reveal-up">
+                        <div class="text-[#E8C46B] mb-8 flex space-x-1">
+                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                        </div>
+                        <p class="font-playfair text-xl italic text-[#E5E2E1] mb-10 leading-relaxed">
+                            "Profissionalismo impecável. A LM cuidou de toda a migração da minha empresa sem qualquer estresse."
+                        </p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-[#E8C46B] flex items-center justify-center font-bold text-[#131313]">PL</div>
+                            <div>
+                                <p class="font-bold text-sm">Paulo L.</p>
+                                <p class="text-xs text-[#D0C5B2] font-dm-sans uppercase tracking-widest">Construtora PLima</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. CTA FINAL -->
+        <section id="contato" class="py-32 bg-[#131313] relative overflow-hidden">
+            <div class="container mx-auto px-6 relative z-10">
+                <div class="bg-gradient-to-br from-[#1c1b1b] to-[#131313] p-16 md:p-24 text-center border border-[#E8C46B]/10 reveal-up">
+                    <span class="font-dm-sans text-[#E8C46B] text-xs tracking-[0.3em] uppercase mb-10 block">Pronto para começar?</span>
+                    <h2 class="font-playfair text-4xl md:text-6xl mb-12">Transforme a contabilidade da sua empresa hoje</h2>
+                    
+                    <div class="flex flex-col md:flex-row gap-6 justify-center">
+                        <a href="#" class="bg-[#E8C46B] text-[#131313] px-12 py-5 font-bold uppercase tracking-widest hover:brightness-110 transition-all flex items-center justify-center gap-3">
+                            Falar com um especialista ↗
+                        </a>
+                        <a href="#" class="border border-[#D0C5B2] text-[#E5E2E1] px-12 py-5 font-bold uppercase tracking-widest hover:bg-[#E5E2E1] hover:text-[#131313] transition-all flex items-center justify-center gap-3">
+                            WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- Glow decorative icon -->
+            <div class="absolute -bottom-64 -right-64 w-[600px] h-[600px] bg-[#E8C46B]/5 rounded-full blur-[120px]"></div>
+        </section>
+    </main>
+
+    <!-- 8. FOOTER -->
+    <footer class="bg-[#0e0e0e] pt-20 pb-10 border-t border-[#E8C46B]/5">
+        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
+            <div class="col-span-1">
+                <div class="flex items-center space-x-2 text-xl font-playfair font-bold text-[#E8C46B] mb-8">
+                    <span>LM Contabilidade</span>
+                </div>
+                <p class="text-[#D0C5B2] text-sm leading-relaxed mb-6">
+                    Excelência contábil e consultoria estratégica para negócios que buscam segurança jurídica e crescimento sustentável.
+                </p>
+                <div class="text-[10px] uppercase tracking-widest text-[#D0C5B2]/40 font-bold">
+                    CRC-XX 000000/O-0
+                </div>
+            </div>
+            
+            <div>
+                <h4 class="font-playfair text-[#E8C46B] mb-8">Serviços</h4>
+                <ul class="space-y-4 text-sm text-[#D0C5B2]">
+                    <li><a href="#" class="hover:text-[#E8C46B] transition-colors">Abertura de Empresa</a></li>
+                    <li><a href="#" class="hover:text-[#E8C46B] transition-colors">Planejamento Tributário</a></li>
+                    <li><a href="#" class="hover:text-[#E8C46B] transition-colors">Gestão Fiscal</a></li>
+                    <li><a href="#" class="hover:text-[#E8C46B] transition-colors">Folha de Pagamento</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="font-playfair text-[#E8C46B] mb-8">Empresa</h4>
+                <ul class="space-y-4 text-sm text-[#D0C5B2]">
+                    <li><a href="#" class="hover:text-[#E8C46B] transition-colors">Sobre Nós</a></li>
+                    <li><a href="#" class="hover:text-[#E8C46B] transition-colors">Contato</a></li>
+                    <li><a href="#" class="hover:text-[#E8C46B] transition-colors">Privacidade</a></li>
+                    <li><a href="#" class="hover:text-[#E8C46B] transition-colors">Termos de Uso</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="font-playfair text-[#E8C46B] mb-8">Contato</h4>
+                <ul class="space-y-4 text-sm text-[#D0C5B2]">
+                    <li class="flex items-center gap-3"><i data-feather="mail" class="w-4 h-4 text-[#E8C46B]"></i> contato@lmcontab.com.br</li>
+                    <li class="flex items-center gap-3"><i data-feather="phone" class="w-4 h-4 text-[#E8C46B]"></i> +55 (11) 99999-9999</li>
+                    <li class="flex items-center gap-3"><i data-feather="map-pin" class="w-4 h-4 text-[#E8C46B]"></i> São Paulo, SP</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="container mx-auto px-6 pt-10 border-t border-[#E8C46B]/5 flex flex-col md:row justify-between items-center gap-6">
+            <p class="text-[#D0C5B2]/40 text-[10px] uppercase tracking-widest font-bold">
+                © 2026 LM Contabilidade. Lucas Marcelino. Todos os direitos reservados.
+            </p>
+            <div class="flex gap-6">
+                <a href="#" class="text-[#D0C5B2]/40 hover:text-[#E8C46B] transition-all"><i data-feather="instagram" class="w-4 h-4"></i></a>
+                <a href="#" class="text-[#D0C5B2]/40 hover:text-[#E8C46B] transition-all"><i data-feather="linkedin" class="w-4 h-4"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="scripts.js"></script>
+</body>
+</html>
