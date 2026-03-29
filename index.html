@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
@@ -68,7 +68,7 @@
     <header class="header fixed top-0 w-full h-90 z-50 transition-all duration-300">
         <nav class="container mx-auto px-6 h-20 flex justify-between items-center">
             <a href="#home" class="logo flex items-center">
-                <img src="Logo.png">
+                <img src="Logo.png" class="h-12 md:h-16 w-auto object-contain">
             </a>
 
             <!-- Desktop Menu (Centralized) -->
@@ -90,10 +90,14 @@
                     conosco ↗</a>
             </div>
 
-            <!-- Mobile Menu Toggle -->
-            <button class="md:hidden text-[#E8C46B]" id="menu-toggle">
-                <i data-feather="menu"></i>
-            </button>
+            <!-- Mobile Actions & Menu Toggle -->
+            <div class="flex items-center space-x-4 md:hidden">
+                <a href="https://portal.lmcontab.com.br" target="_blank"
+                    class="border border-[#E8C46B] text-[#E8C46B] px-3 py-1.5 rounded-sm font-bold text-[9px] uppercase tracking-[0.2em] hover:bg-[#E8C46B] hover:text-[#131313] transition-all">Portal</a>
+                <button class="text-[#E8C46B]" id="menu-toggle">
+                    <i data-feather="menu"></i>
+                </button>
+            </div>
         </nav>
 
         <!-- Mobile Navigation Menu -->
@@ -113,7 +117,7 @@
 
     <main>
         <!-- 2. HERO SECTION -->
-        <section id="home" class="hero relative h-screen w-full flex items-center overflow-hidden">
+        <section id="home" class="hero relative min-h-screen w-full flex flex-col justify-center overflow-hidden pt-32 pb-20">
             <!-- Video Background Container -->
             <div class="absolute inset-0 z-0">
                 <!-- Se o vídeo não existir, ele usará o fundo preto com gradiente -->
@@ -225,7 +229,7 @@
         </section>
 
         <!-- 4. PARA QUEM É -->
-        <section id="para-quem" class="relative py-24 bg-[#0e0e0e] overflow-hidden">
+        <section id="para-quem" class="relative pt-24 lg:py-24 bg-[#0e0e0e] overflow-hidden">
             <div class="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center relative z-20">
                 <div class="space-y-8 reveal-up">
                     <h2 class="font-playfair text-4xl md:text-5xl leading-tight">Soluções desenhadas para o <span
@@ -261,25 +265,27 @@
                     </div>
                 </div>
 
-                <div class="block lg:hidden relative w-full h-[400px] reveal-up z-20 mt-8">
-                    <div
-                        class="absolute inset-0 bg-gradient-to-t from-[#0e0e0e] via-[#0e0e0e]/50 to-transparent z-0 pointer-events-none">
-                    </div>
-                    <!-- Substitua o src abaixo pelo base64 da calculadora dourada -->
-                    <img src="calculadora.png">
+            </div>
+
+            <!-- Imagem Ocupando 100% no Mobile -->
+            <div class="block lg:hidden relative w-full h-[400px] reveal-up z-20 mt-12">
+                <div
+                    class="absolute inset-0 bg-gradient-to-b from-[#0e0e0e] via-[#0e0e0e]/50 to-transparent z-10 pointer-events-none">
                 </div>
+                <!-- Substitua o src abaixo pelo base64 da calculadora dourada -->
+                <img src="calculadora.png" class="absolute inset-0 w-full h-full object-cover object-center z-0">
             </div>
 
             <!-- Imagem Ocupando Metade Direita Inteira no Desktop -->
             <div class="hidden lg:block absolute top-0 right-0 w-1/2 h-full z-10">
                 <div
-                    class="absolute inset-0 bg-gradient-to-r from-[#0e0e0e] via-[#0e0e0e]/50 to-transparent z-0 pointer-events-none">
+                    class="absolute inset-0 bg-gradient-to-r from-[#0e0e0e] via-[#0e0e0e]/50 to-transparent z-10 pointer-events-none">
                 </div>
                 <div
-                    class="absolute inset-y-0 left-0 w-24 md:w-32 bg-gradient-to-r from-[#0e0e0e] to-transparent z-0 pointer-events-none">
+                    class="absolute inset-y-0 left-0 w-24 md:w-32 bg-gradient-to-r from-[#0e0e0e] to-transparent z-10 pointer-events-none">
                 </div>
                 <!-- Substitua o src abaixo pelo base64 da calculadora dourada -->
-                <img src="calculadora.png">
+                <img src="calculadora.png" class="absolute inset-0 w-full h-full object-cover object-center z-0">
             </div>
         </section>
         <!-- 5. PLANOS E PREÇOS -->
