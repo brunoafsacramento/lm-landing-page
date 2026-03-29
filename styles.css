@@ -45,11 +45,17 @@ body::before {
 }
 
 /* Glassmorphism Header */
+.header {
+    height: 85px !important;
+    border-bottom: 1px solid rgba(232, 196, 107, 0);
+    transition: background 0.3s, border-bottom-color 0.3s, backdrop-filter 0.3s;
+}
+
 .header.scrolled {
     background: rgba(19, 19, 19, 0.8);
     backdrop-filter: blur(15px);
-    border-bottom: 1px solid rgba(232, 196, 107, 0.1);
-    height: 70px !important;
+    border-bottom-color: rgba(232, 196, 107, 0.1);
+    height: 85px !important;
 }
 
 /* Hero Gradient */
@@ -101,8 +107,13 @@ body::before {
 
 /* Simple Animation Utilities */
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .animate-fade-in {
