@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell -Command \"[Convert]::ToBase64String\\([IO.File]::ReadAllBytes\\(''C:/Users/bruno.sacramento/OneDrive - Rio Bravo/Documents/LM/Logo LM.png''\\)\\)\")",
+      "Bash(powershell -Command \":*)",
+      "Bash(powershell -NoProfile -Command \":*)",
+      "Bash(powershell -NoProfile -ExecutionPolicy Bypass -File \"c:/Users/bruno.sacramento/OneDrive - Rio Bravo/Documents/LM/Landing Page LM/fix_seo.ps1\")",
+      "Bash(powershell -NoProfile -ExecutionPolicy Bypass -File \"c:/Users/bruno.sacramento/OneDrive - Rio Bravo/Documents/LM/Landing Page LM/fix_encoding.ps1\")",
+      "Bash(powershell -NoProfile -ExecutionPolicy Bypass -File \"c:/Users/bruno.sacramento/OneDrive - Rio Bravo/Documents/LM/Landing Page LM/fix_image.ps1\")",
+      "Bash(ls \"c:/Users/bruno.sacramento/OneDrive - Rio Bravo/Documents/LM/Landing Page LM/\"*.png \"c:/Users/bruno.sacramento/OneDrive - Rio Bravo/Documents/LM/Landing Page LM/\"*.jpg \"c:/Users/bruno.sacramento/OneDrive - Rio Bravo/Documents/LM/Landing Page LM/\"*.webp)"
+    ]
+  }
+}
