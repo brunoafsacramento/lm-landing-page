@@ -1,0 +1,20 @@
+{
+  "name": "lm-landing-page",
+  "version": "1.0.0",
+  "description": "LM Contabilidade Landing Page",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx http-server -p 3000",
+    "build": "echo 'Static site - no build required'",
+    "test": "echo 'No tests configured'"
+  },
+  "keywords": [
+    "landing-page",
+    "contabilidade"
+  ],
+  "author": "Lucas Marcelino - LM Contabilidade",
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1"
+  }
+}
