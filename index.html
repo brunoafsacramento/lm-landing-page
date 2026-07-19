@@ -1,584 +1,131 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LM Contabilidade | Especialistas em Gestão Contábil</title>
+    <title>LM Contabilidade | Contabilidade próxima e descomplicada</title>
     <link rel="icon" type="image/png" href="Logo LM.png">
-
-    <!-- SEO -->
-    <meta name="description"
-        content="EscritÃ³rio de contabilidade em SÃ£o Paulo especializado em planejamento tributÃ¡rio e abertura de empresas. Atendimento personalizado para MEI, pequenas e mÃ©dias empresas.">
-    <meta name="keywords"
-        content="contabilidade SÃ£o Paulo, planejamento tributÃ¡rio, abertura de empresa, contabilidade MEI, escritÃ³rio contÃ¡bil SP, gestÃ£o fiscal">
-    <meta name="author" content="Lucas Marcelino - LM Contabilidade">
+    <meta name="description" content="Contabilidade próxima, organizada e sem complicação para MEIs, profissionais e pequenas empresas. Fale com a LM Contabilidade.">
+    <meta name="keywords" content="contabilidade São Paulo, contabilidade MEI, abertura de empresa, planejamento tributário, escritório contábil SP">
+    <meta name="author" content="LM Contabilidade">
     <link rel="canonical" href="https://lmcontab.com.br">
     <meta name="robots" content="index, follow">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://lmcontab.com.br">
-    <meta property="og:title" content="LM Contabilidade | Especialistas em GestÃ£o ContÃ¡bil">
-    <meta property="og:description"
-        content="EscritÃ³rio de contabilidade em SÃ£o Paulo especializado em planejamento tributÃ¡rio e abertura de empresas.">
+    <meta property="og:title" content="LM Contabilidade | Contabilidade próxima e descomplicada">
+    <meta property="og:description" content="A gente organiza a contabilidade para você tocar o seu negócio com tranquilidade.">
     <meta property="og:locale" content="pt_BR">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="LM Contabilidade | Especialistas em GestÃ£o ContÃ¡bil">
-    <meta name="twitter:description"
-        content="EscritÃ³rio de contabilidade em SÃ£o Paulo especializado em planejamento tributÃ¡rio e abertura de empresas.">
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "AccountingService",
-      "name": "LM Contabilidade",
-      "description": "Escritório de contabilidade em São Paulo especializado em planejamento tributÃ¡rio e abertura de empresas.",
-      "url": "https://lmcontab.com.br",
-      "telephone": "+55-11-98786-7389",
-      "email": "lmcontabilidade@lmcontab.com.br",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "São Paulo",
-        "addressRegion": "SP",
-        "addressCountry": "BR"
-      },
-      "areaServed": "São Paulo",
-      "priceRange": ""
-    }
+    {"@context":"https://schema.org","@type":"AccountingService","name":"LM Contabilidade","url":"https://lmcontab.com.br","telephone":"+55-11-98786-7389","email":"lmcontabilidade@lmcontab.com.br","address":{"@type":"PostalAddress","addressLocality":"São Paulo","addressRegion":"SP","addressCountry":"BR"},"areaServed":"Brasil"}
     </script>
-
-    <!-- Google Fonts: Playfair Display + DM Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@400;500;700&display=swap"
-        rel="stylesheet">
-
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="styles.css">
-
-    <!-- Icons (Feather or FontAwesome alternative) -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
+<body>
+    <div class="custom-cursor" aria-hidden="true"><span class="cursor-ring"></span><span class="cursor-core"></span></div>
+    <div class="scroll-progress" aria-hidden="true"></div>
 
-<body class="bg-[#131313] text-[#E5E2E1] font-dm-sans selection:bg-[#E8C46B] selection:text-[#131313]">
-
-    <!-- 1. HEADER (Fixed) -->
-    <header class="header fixed top-0 w-full h-90 z-50 transition-all duration-300">
-        <nav class="container mx-auto px-6 h-20 flex justify-between items-center">
-            <a href="#home" class="logo flex items-center">
-                <img src="Logo.png" class="h-12 md:h-16 w-auto object-contain">
-            </a>
-
-            <!-- Desktop Menu (Centralized) -->
-            <ul
-                class="hidden lg:flex space-x-12 text-[11px] font-bold uppercase tracking-[0.2em] text-[#D0C5B2] transition-all">
-                <li><a href="#servicos" class="hover:text-[#E8C46B] transition-colors">Serviços</a></li>
-                <li><a href="#para-quem" class="hover:text-[#E8C46B] transition-colors">Para quem é</a></li>
-                <li><a href="#planos" class="hover:text-[#E8C46B] transition-colors">Planos</a></li>
-                <li><a href="#depoimentos" class="hover:text-[#E8C46B] transition-colors">Depoimentos</a></li>
-            </ul>
-
-            <!-- Actions -->
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="https://portal.lmcontab.com.br" target="_blank"
-                    class="text-[#D0C5B2] hover:text-[#E8C46B] text-[10px] font-bold uppercase tracking-[0.2em] transition-all">Portal</a>
-                <a href="https://wa.me/5511987867389?text=Ol%C3%A1%2C%20vim%20pelo%20site%20e%20gostaria%20de%20falar%20com%20um%20especialista."
-                    target="_blank"
-                    class="cta-btn bg-[#E8C46B] text-[#131313] px-8 py-3 rounded-sm font-bold text-[10px] uppercase tracking-[0.2em] hover:brightness-110 transition-all shadow-xl shadow-[#E8C46B]/10">Fale
-                    conosco ↗</a>
-            </div>
-
-            <!-- Mobile Actions & Menu Toggle -->
-            <div class="flex items-center space-x-4 md:hidden">
-                <a href="https://portal.lmcontab.com.br" target="_blank"
-                    class="border border-[#E8C46B] text-[#E8C46B] px-3 py-1.5 rounded-sm font-bold text-[9px] uppercase tracking-[0.2em] hover:bg-[#E8C46B] hover:text-[#131313] transition-all">Portal</a>
-                <button class="text-[#E8C46B]" id="menu-toggle">
-                    <i data-feather="menu"></i>
-                </button>
-            </div>
+    <header class="site-header">
+        <a href="#inicio" class="brand" aria-label="LM Contabilidade — início">
+            <img src="Logo.png" alt="LM Contabilidade">
+        </a>
+        <nav class="desktop-nav" aria-label="Navegação principal">
+            <a href="#servicos">O que fazemos</a>
+            <a href="#como-funciona">Como funciona</a>
+            <a href="#para-quem">Para quem</a>
+            <a href="#contato">Contato</a>
         </nav>
-
-        <!-- Mobile Navigation Menu -->
-        <div id="mobile-menu"
-            class="hidden absolute top-[85px] left-0 w-full bg-[#131313]/95 backdrop-blur-xl p-8 border-b border-[#E8C46B]/20">
-            <ul class="space-y-6 text-center text-sm uppercase tracking-widest font-bold">
-                <li><a href="#servicos" class="mobile-link">Serviços</a></li>
-                <li><a href="#para-quem" class="mobile-link">Para quem é</a></li>
-                <li><a href="#planos" class="mobile-link">Planos</a></li>
-                <li><a href="#depoimentos" class="mobile-link">Depoimentos</a></li>
-                <li><a href="#contato" class="mobile-link">Fale Conosco</a></li>
-                <li><a href="https://portal.lmcontab.com.br" target="_blank" class="mobile-link text-[#E8C46B]">Acessar
-                        Portal</a></li>
-            </ul>
+        <div class="header-actions">
+            <a href="https://portal.lmcontab.com.br" target="_blank" rel="noopener" class="portal-link">Portal do cliente</a>
+            <a href="https://wa.me/5511987867389?text=Ol%C3%A1%2C%20vim%20pelo%20site%20e%20gostaria%20de%20conhecer%20a%20LM%20Contabilidade." target="_blank" rel="noopener" class="button button-dark magnetic">Vamos conversar</a>
+        </div>
+        <button class="menu-button" id="menu-toggle" aria-label="Abrir menu" aria-expanded="false"><i data-feather="menu"></i></button>
+        <div class="mobile-menu" id="mobile-menu">
+            <a href="#servicos">O que fazemos</a><a href="#como-funciona">Como funciona</a><a href="#para-quem">Para quem</a><a href="#contato">Contato</a>
+            <a href="https://portal.lmcontab.com.br" target="_blank" rel="noopener">Portal do cliente ↗</a>
         </div>
     </header>
 
     <main>
-        <!-- 2. HERO SECTION -->
-        <section id="home"
-            class="hero relative min-h-screen w-full flex flex-col justify-center overflow-hidden pt-32 pb-20">
-            <!-- Video Background Container -->
-            <div class="absolute inset-0 z-0">
-                <!-- Se o vídeo não existir, ele usará o fundo preto com gradiente -->
-                <video id="hero-video" class="w-full h-full object-cover opacity-60" autoplay muted loop playsinline>
-                    <source src="hero-bg.mp4" type="video/mp4">
-                    <!-- Fallback se o vídeo falhar -->
-                </video>
-                <div class="absolute inset-0 bg-gradient-to-r from-[#131313] via-[#131313]/90 to-transparent z-10">
+        <section id="inicio" class="hero section-pad">
+            <div class="hero-copy reveal">
+                <div class="eyebrow"><span class="live-dot"></span> Tecnologia que aproxima. Pessoas que resolvem.</div>
+                <h1>Contabilidade ágil.<br><em>Conversa de verdade.</em></h1>
+                <p>A tecnologia organiza a rotina e antecipa o que precisa de atenção. Do outro lado, tem uma equipe que conhece você, explica sem complicar e acompanha cada decisão.</p>
+                <div class="hero-actions">
+                    <a href="https://wa.me/5511987867389?text=Ol%C3%A1%2C%20quero%20entender%20como%20a%20LM%20pode%20ajudar%20meu%20neg%C3%B3cio." target="_blank" rel="noopener" class="button button-primary magnetic">Falar no WhatsApp <i data-feather="arrow-up-right"></i></a>
+                    <a href="#servicos" class="text-link">Conhecer os serviços <i data-feather="arrow-down"></i></a>
                 </div>
+                <div class="trust-row"><span>CRC-1SP358328</span><span>Especialista de verdade no atendimento</span><span>Portal exclusivo</span></div>
             </div>
-
-            <div class="container mx-auto px-6 relative z-20">
-                <div class="max-w-3xl reveal-up">
-                    <span
-                        class="inline-block border-l-2 border-[#E8C46B] pl-4 mb-6 font-medium text-sm tracking-[0.3em] uppercase text-[#D0C5B2]">Contabilidade
-                        Inteligente para o seu negócio</span>
-                    <h1 class="font-playfair text-6xl md:text-8xl leading-none mb-8">Contabilidade que <span
-                            class="italic text-[#E8C46B]">impulsiona</span> seu negócio</h1>
-                    <p class="font-dm-sans text-xl md:text-2xl text-[#D0C5B2] mb-12 max-w-xl leading-relaxed">
-                        Cuidamos de toda a parte contábil, fiscal e trabalhista para você focar no que realmente
-                        importa: o crescimento da sua empresa.
-                    </p>
-
-                    <!-- <div class="cta-form flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                        <input type="email" placeholder="Seu melhor e-mail"
-                            class="bg-transparent border-b border-[#D0C5B2] py-4 px-2 w-full sm:w-80 outline-none focus:border-[#E8C46B] transition-all text-lg">
-                        <button
-                            class="bg-[#E8C46B] text-[#131313] px-10 py-4 rounded-sm font-bold text-lg uppercase tracking-widest hover:brightness-110 transition-all">Quero
-                            uma consulta</button>
-                    </div> -->
+            <div class="hero-scene reveal" data-parallax="0.08">
+                <div class="video-card tilt-card">
+                    <video autoplay muted loop playsinline aria-label="Rotina de trabalho na LM Contabilidade"><source src="hero-bg.mp4" type="video/mp4"></video>
+                    <div class="video-caption"><span>Organização digital</span><strong>com olhar humano.</strong></div>
                 </div>
-            </div>
-
-            <!-- Bounce Arrow -->
-            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
-                <a href="#servicos" class="text-[#E8C46B]"><i data-feather="chevron-down" class="w-8 h-8"></i></a>
+                <div class="floating-note note-one"><span class="note-status"></span><strong>Atendimento humano</strong><br>do começo ao fim</div>
             </div>
         </section>
 
-        <!-- 3. SERVIÇOS -->
-        <section id="servicos" class="py-24 bg-[#131313]">
-            <div class="container mx-auto px-6">
-                <div class="mb-20 reveal-up">
-                    <span
-                        class="font-dm-sans text-[#E8C46B] text-xs tracking-[0.3em] uppercase mb-4 block">Especialidades</span>
-                    <h2 class="font-playfair text-4xl md:text-5xl">Serviços do Nosso <span
-                            class="italic font-light">Atelier Contábil</span></h2>
-                </div>
+        <div class="ticker" aria-label="Áreas de atuação">
+            <div class="ticker-track"><div class="ticker-group"><span>MEI</span><b>✦</b><span>Empresas</span><b>✦</b><span>Imposto de renda</span><b>✦</b><span>Abertura de CNPJ</span><b>✦</b><span>BPO financeiro</span><b>✦</b><span>Consultoria</span><b>✦</b></div></div>
+        </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-[#E8C46B]/10">
-                    <!-- Card 1 -->
-                    <div class="service-card bg-[#1c1b1b] p-10 reveal-up">
-                        <i data-feather="briefcase" class="text-[#E8C46B] w-10 h-10 mb-6"></i>
-                        <h3 class="font-playfair text-2xl mb-4 text-[#E5E2E1]">Abertura de CNPJ</h3>
-                        <p class="text-[#D0C5B2] leading-relaxed">Inicie sua jornada empresarial com a estrutura
-                            societária ideal e planejamento tributário desde o primeiro dia.</p>
-                    </div>
-                    <!-- Card 2 -->
-                    <div class="service-card bg-[#1c1b1b] p-10 reveal-up">
-                        <i data-feather="refresh-cw" class="text-[#E8C46B] w-10 h-10 mb-6"></i>
-                        <h3 class="font-playfair text-2xl mb-4 text-[#E5E2E1]">Alteração e Migração</h3>
-                        <p class="text-[#D0C5B2] leading-relaxed">Traga sua empresa para a excelência com uma transição
-                            suave e eficiente, sem interrupções no seu negócio.</p>
-                    </div>
-                    <!-- Card 3 -->
-                    <div class="service-card bg-[#1c1b1b] p-10 reveal-up">
-                        <i data-feather="check-circle" class="text-[#E8C46B] w-10 h-10 mb-6"></i>
-                        <h3 class="font-playfair text-2xl mb-4 text-[#E5E2E1]">Regularização Fiscal</h3>
-                        <p class="text-[#D0C5B2] leading-relaxed">Colocamos sua situação fiscal em dia com inteligência
-                            e conformidade total perante os órgãos reguladores.</p>
-                    </div>
-                    <!-- Card 4 -->
-                    <div class="service-card bg-[#1c1b1b] p-10 reveal-up">
-                        <i data-feather="lock" class="text-[#E8C46B] w-10 h-10 mb-6"></i>
-                        <h3 class="font-playfair text-2xl mb-4 text-[#E5E2E1]">Baixa de Empresa</h3>
-                        <p class="text-[#D0C5B2] leading-relaxed">Encerramento de empresas sem pendências e com total
-                            transparência processual para sua tranquilidade.</p>
-                    </div>
-                    <!-- Card 5 -->
-                    <div class="service-card bg-[#1c1b1b] p-10 reveal-up">
-                        <i data-feather="file-text" class="text-[#E8C46B] w-10 h-10 mb-6"></i>
-                        <h3 class="font-playfair text-2xl mb-4 text-[#E5E2E1]">Imposto de Renda</h3>
-                        <p class="text-[#D0C5B2] leading-relaxed">Declaração de IRPF estratégica para alta renda e
-                            investidores, otimizando sua restituição ou reduzindo o imposto.</p>
-                    </div>
-                    <!-- Card 6 -->
-                    <div class="service-card bg-[#1c1b1b] p-10 reveal-up">
-                        <i data-feather="user" class="text-[#E8C46B] w-10 h-10 mb-6"></i>
-                        <h3 class="font-playfair text-2xl mb-4 text-[#E5E2E1]">Obrigações MEI</h3>
-                        <p class="text-[#D0C5B2] leading-relaxed">Suporte completo para o Microempreendedor Individual
-                            crescer organizado e cumprir todas as obrigações.</p>
-                    </div>
-                    <!-- Card 7 -->
-                    <div class="service-card bg-[#1c1b1b] p-10 reveal-up">
-                        <i data-feather="search" class="text-[#E8C46B] w-10 h-10 mb-6"></i>
-                        <h3 class="font-playfair text-2xl mb-4 text-[#E5E2E1]">Perícias Contábeis</h3>
-                        <p class="text-[#D0C5B2] leading-relaxed">Análise técnica detalhada e laudos periciais para
-                            processos judiciais ou resoluções extrajudiciais.</p>
-                    </div>
-                    <!-- Card 8 -->
-                    <div class="service-card bg-[#1c1b1b] p-10 reveal-up">
-                        <i data-feather="plus-circle" class="text-[#E8C46B] w-10 h-10 mb-6"></i>
-                        <h3 class="font-playfair text-2xl mb-4 text-[#E5E2E1]">Serviços Extras</h3>
-                        <p class="text-[#D0C5B2] leading-relaxed">Consultoria sob medida e serviços complementares para
-                            necessidades específicas do seu ecossistema.</p>
-                    </div>
+        <section id="servicos" class="services section-pad">
+            <div class="section-heading reveal"><span>O que a gente resolve</span><h2>Do primeiro CNPJ às decisões que fazem a empresa crescer.</h2><p>Sem palavras difíceis. Você entende o que está acontecendo e sabe qual é o próximo passo.</p></div>
+            <div class="service-grid">
+                <article class="service-card reveal tilt-card"><span class="service-number">01</span><i data-feather="briefcase"></i><h3>Abrir ou regularizar</h3><p>CNPJ, alterações, migração e pendências resolvidas com orientação do começo ao fim.</p><span class="card-tag">Começar bem</span></article>
+                <article class="service-card reveal tilt-card"><span class="service-number">02</span><i data-feather="calendar"></i><h3>Cuidar da rotina</h3><p>Fiscal, contábil, folha e obrigações organizadas para você não viver apagando incêndio.</p><span class="card-tag">Todo mês</span></article>
+                <article class="service-card reveal tilt-card"><span class="service-number">03</span><i data-feather="trending-up"></i><h3>Entender os números</h3><p>Relatórios e conversas que transformam dados em decisões práticas para o negócio.</p><span class="card-tag">Crescer com clareza</span></article>
+                <article class="service-card reveal tilt-card"><span class="service-number">04</span><i data-feather="file-text"></i><h3>Imposto de renda</h3><p>Declaração, revisão e acompanhamento para pessoas físicas, empresários e investidores.</p><span class="card-tag">Sem susto</span></article>
+            </div>
+        </section>
+
+        <section id="como-funciona" class="horizontal-section">
+            <div class="horizontal-sticky">
+                <div class="horizontal-intro"><span>Um jeito simples de trabalhar</span><h2>Você fala.<br>A gente organiza.<br>Todo mundo acompanha.</h2><p>Role para ver como funciona →</p></div>
+                <div class="horizontal-track">
+                    <article class="step-card step-yellow"><b>1</b><i data-feather="message-circle"></i><h3>A gente escuta</h3><p>Entendemos sua rotina, o momento da empresa e o que está tirando seu sono.</p></article>
+                    <article class="step-card step-blue"><b>2</b><i data-feather="layers"></i><h3>Organiza a casa</h3><p>Documentos, obrigações e informações passam a ter um fluxo claro e previsível.</p></article>
+                    <article class="step-card step-green"><b>3</b><i data-feather="monitor"></i><h3>Você acompanha</h3><p>No portal da LM, arquivos, serviços e informações ficam acessíveis em um só lugar.</p></article>
+                    <article class="step-card step-coral"><b>4</b><i data-feather="coffee"></i><h3>A conversa continua</h3><p>Nada de sumir depois do contrato. Estamos por perto para orientar as próximas decisões.</p></article>
                 </div>
             </div>
         </section>
 
-        <!-- 4. PARA QUEM É -->
-        <section id="para-quem" class="relative pt-24 lg:py-24 bg-[#0e0e0e] overflow-hidden">
-            <div class="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center relative z-20">
-                <div class="space-y-8 reveal-up">
-                    <h2 class="font-playfair text-4xl md:text-5xl leading-tight">Soluções desenhadas para o <span
-                            class="italic text-[#E8C46B]">seu momento</span></h2>
-                    <p class="text-xl text-[#D0C5B2] leading-relaxed">Não somos apenas contadores; somos parceiros
-                        estratégicos de diversos perfis de negócios.</p>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div
-                            class="bg-[#131313] p-8 border-l-2 border-[#E8C46B]/30 hover:border-[#E8C46B] transition-all">
-                            <h4 class="font-playfair text-xl mb-3">MEIs & Micro</h4>
-                            <p class="text-sm text-[#D0C5B2]">Gestão simplificada e eficaz para quem está começando com
-                                grandes ambições.</p>
-                        </div>
-                        <div
-                            class="bg-[#131313] p-8 border-l-2 border-[#E8C46B]/30 hover:border-[#E8C46B] transition-all">
-                            <h4 class="font-playfair text-xl mb-3">PMEs</h4>
-                            <p class="text-sm text-[#D0C5B2]">Escalabilidade com controle tributário rigoroso e suporte
-                                na tomada de decisões.</p>
-                        </div>
-                        <div
-                            class="bg-[#131313] p-8 border-l-2 border-[#E8C46B]/30 hover:border-[#E8C46B] transition-all">
-                            <h4 class="font-playfair text-xl mb-3">Profissionais Liberais</h4>
-                            <p class="text-sm text-[#D0C5B2]">Médicos, dentistas e advogados com tributação otimizada
-                                para sua área específica.</p>
-                        </div>
-                        <div
-                            class="bg-[#131313] p-8 border-l-2 border-[#E8C46B]/30 hover:border-[#E8C46B] transition-all">
-                            <h4 class="font-playfair text-xl mb-3">Caminhoneiros</h4>
-                            <p class="text-sm text-[#D0C5B2]">Contabilidade especializada para transportadores e
-                                autônomos das estradas.</p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Imagem Ocupando 100% no Mobile -->
-            <div class="block lg:hidden relative w-full h-[400px] reveal-up z-20 mt-12">
-                <div
-                    class="absolute inset-0 bg-gradient-to-b from-[#0e0e0e] via-[#0e0e0e]/50 to-transparent z-10 pointer-events-none">
-                </div>
-                <!-- Substitua o src abaixo pelo base64 da calculadora dourada -->
-                <img src="calculadora.png" class="absolute inset-0 w-full h-full object-cover object-center z-0">
-            </div>
-
-            <!-- Imagem Ocupando Metade Direita Inteira no Desktop -->
-            <div class="hidden lg:block absolute top-0 right-0 w-1/2 h-full z-10">
-                <div
-                    class="absolute inset-0 bg-gradient-to-r from-[#0e0e0e] via-[#0e0e0e]/50 to-transparent z-10 pointer-events-none">
-                </div>
-                <div
-                    class="absolute inset-y-0 left-0 w-24 md:w-32 bg-gradient-to-r from-[#0e0e0e] to-transparent z-10 pointer-events-none">
-                </div>
-                <!-- Substitua o src abaixo pelo base64 da calculadora dourada -->
-                <img src="calculadora.png" class="absolute inset-0 w-full h-full object-cover object-center z-0">
-            </div>
-        </section>
-        <!-- 5. PLANOS E PREÇOS -->
-        <section id="planos" class="py-24 bg-[#131313]">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-20 reveal-up">
-                    <h2 class="font-playfair text-4xl md:text-5xl mb-6">Investimento em <span
-                            class="italic text-[#E8C46B]">Tranquilidade</span></h2>
-                    <p class="text-[#D0C5B2] max-w-xl mx-auto">Planos desenhados para o momento atual do seu negócio,
-                        sem cobranças surpresas.</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <!-- MEI -->
-                    <div
-                        class="bg-[#1c1b1b] p-8 flex flex-col h-full border border-[#E8C46B]/10 hover:border-[#E8C46B]/30 transition-all reveal-up">
-                        <h3 class="font-dm-sans uppercase tracking-widest text-sm mb-6 text-[#E8C46B]">MEI</h3>
-                        <div class="flex items-baseline mb-8">
-                            <span class="text-sm text-[#D0C5B2] mr-1">R$</span>
-                            <span class="text-5xl font-playfair text-[#E5E2E1]">130</span>
-                            <span class="text-sm text-[#D0C5B2] ml-1">/mês</span>
-                        </div>
-                        <ul class="space-y-4 text-sm text-[#D0C5B2] flex-grow mb-10">
-                            <li class="flex items-center gap-2"><i data-feather="check"
-                                    class="w-4 h-4 text-[#E8C46B]"></i> DAS Mensal</li>
-                            <li class="flex items-center gap-2"><i data-feather="check"
-                                    class="w-4 h-4 text-[#E8C46B]"></i> Declaração Anual</li>
-                            <li class="flex items-center gap-2"><i data-feather="check"
-                                    class="w-4 h-4 text-[#E8C46B]"></i> Suporte WhatsApp</li>
-                        </ul>
-                        <a href="https://wa.me/5511987867389?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20o%20plano%20MEI%20com%20valor%20de%20R%24%20130%2Fm%C3%AAs."
-                            target="_blank"
-                            class="w-full block text-center border border-[#E8C46B]/40 py-3 font-bold text-xs uppercase tracking-widest hover:bg-[#E8C46B] hover:text-[#131313] transition-all">Selecionar</a>
-                    </div>
-
-                    <!-- MEI Caminhoneiro -->
-                    <div
-                        class="bg-[#1c1b1b] p-8 flex flex-col h-full border border-[#E8C46B]/10 hover:border-[#E8C46B]/30 transition-all reveal-up">
-                        <h3 class="font-dm-sans uppercase tracking-widest text-sm mb-6 text-[#E8C46B]">MEI Caminhoneiro
-                        </h3>
-                        <div class="flex items-baseline mb-8">
-                            <span class="text-sm text-[#D0C5B2] mr-1">R$</span>
-                            <span class="text-5xl font-playfair text-[#E5E2E1]">170</span>
-                            <span class="text-sm text-[#D0C5B2] ml-1">/mês</span>
-                        </div>
-                        <ul class="space-y-4 text-sm text-[#D0C5B2] flex-grow mb-10">
-                            <li class="flex items-center gap-2"><i data-feather="check"
-                                    class="w-4 h-4 text-[#E8C46B]"></i> Tudo do MEI</li>
-                            <li class="flex items-center gap-2"><i data-feather="check"
-                                    class="w-4 h-4 text-[#E8C46B]"></i> Gestão de NF-e</li>
-                            <li class="flex items-center gap-2"><i data-feather="check"
-                                    class="w-4 h-4 text-[#E8C46B]"></i> Suporte Especializado</li>
-                        </ul>
-                        <a href="https://wa.me/5511987867389?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20o%20plano%20MEI%20Caminhoneiro%20com%20valor%20de%20R%24%20170%2Fm%C3%AAs."
-                            target="_blank"
-                            class="w-full block text-center border border-[#E8C46B]/40 py-3 font-bold text-xs uppercase tracking-widest hover:bg-[#E8C46B] hover:text-[#131313] transition-all">Selecionar</a>
-                    </div>
-
-                    <!-- ME / EPP (HIGHLIGH) -->
-                    <div
-                        class="plan-card-popular bg-[#201f1f] p-8 flex flex-col h-full border-2 border-[#E8C46B] relative transform lg:scale-105 z-10 reveal-up">
-                        <div
-                            class="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#E8C46B] text-[#131313] px-4 py-1 text-[10px] font-bold uppercase tracking-widest">
-                            Mais Popular</div>
-                        <h3 class="font-dm-sans uppercase tracking-widest text-sm mb-6 text-[#E8C46B]">ME / EPP</h3>
-                        <div class="flex items-baseline mb-8">
-                            <span class="text-sm text-[#D0C5B2] mr-1">R$</span>
-                            <span class="text-5xl font-playfair text-[#E5E2E1]">300</span>
-                            <span class="text-sm text-[#D0C5B2] ml-1">/mês</span>
-                        </div>
-                        <ul class="space-y-4 text-sm text-[#D0C5B2] flex-grow mb-10">
-                            <li class="flex items-center gap-2 font-bold text-[#E5E2E1]"><i data-feather="check"
-                                    class="w-4 h-4 text-[#E8C46B]"></i> Contabilidade Completa</li>
-                            <li class="flex items-center gap-2"><i data-feather="check"
-                                    class="w-4 h-4 text-[#E8C46B]"></i> Folha de Pagamento</li>
-                            <li class="flex items-center gap-2"><i data-feather="check"
-                                    class="w-4 h-4 text-[#E8C46B]"></i> Balanço Mensal</li>
-                            <li class="flex items-center gap-2"><i data-feather="check"
-                                    class="w-4 h-4 text-[#E8C46B]"></i> Planejamento Fiscal</li>
-                        </ul>
-                        <a href="https://wa.me/5511987867389?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20o%20plano%20ME%20%2F%20EPP%20com%20valor%20de%20R%24%20300%2Fm%C3%AAs."
-                            target="_blank"
-                            class="w-full block text-center bg-[#E8C46B] text-[#131313] py-3 font-bold text-xs uppercase tracking-widest hover:brightness-110 transition-all">Contratar
-                            Agora</a>
-                    </div>
-
-                    <!-- ME / EPP Plus -->
-                    <div
-                        class="bg-[#1c1b1b] p-8 flex flex-col h-full border border-[#E8C46B]/10 hover:border-[#E8C46B]/30 transition-all reveal-up">
-                        <h3 class="font-dm-sans uppercase tracking-widest text-sm mb-6 text-[#E8C46B]">ME / EPP Plus
-                        </h3>
-                        <div class="flex items-baseline mb-8">
-                            <span class="text-sm text-[#D0C5B2] mr-1">R$</span>
-                            <span class="text-5xl font-playfair text-[#E5E2E1]">450</span>
-                            <span class="text-sm text-[#D0C5B2] ml-1">/mês</span>
-                        </div>
-                        <ul class="space-y-4 text-sm text-[#D0C5B2] flex-grow mb-10">
-                            <li class="flex items-center gap-2"><i data-feather="check"
-                                    class="w-4 h-4 text-[#E8C46B]"></i> Tudo do ME / EPP</li>
-                            <li class="flex items-center gap-2"><i data-feather="check"
-                                    class="w-4 h-4 text-[#E8C46B]"></i> Consultoria Ilimitada</li>
-                            <li class="flex items-center gap-2"><i data-feather="check"
-                                    class="w-4 h-4 text-[#E8C46B]"></i> BPO Financeiro</li>
-                        </ul>
-                        <a href="https://wa.me/5511987867389?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20o%20plano%20ME%20%2F%20EPP%20Plus%20com%20valor%20de%20R%24%20450%2Fm%C3%AAs."
-                            target="_blank"
-                            class="w-full block text-center border border-[#E8C46B]/40 py-3 font-bold text-xs uppercase tracking-widest hover:bg-[#E8C46B] hover:text-[#131313] transition-all">Selecionar</a>
-                    </div>
-                </div>
+        <section id="para-quem" class="audience section-pad">
+            <div class="audience-copy reveal"><span class="eyebrow-simple">Cabe no seu momento</span><h2>Contabilidade não deveria parecer um clube para poucos.</h2><p>Atendemos quem está começando, quem já cresceu e quem só quer trabalhar com mais tranquilidade.</p><a href="https://wa.me/5511987867389?text=Ol%C3%A1%2C%20quero%20saber%20qual%20atendimento%20da%20LM%20faz%20sentido%20para%20mim." target="_blank" rel="noopener" class="button button-dark magnetic">Descobrir o melhor caminho</a></div>
+            <div class="audience-list reveal">
+                <button class="audience-item active" data-copy="Para quem começou pequeno e quer crescer organizado."><span>01</span> MEIs e autônomos <i data-feather="arrow-up-right"></i></button>
+                <button class="audience-item" data-copy="Para empresas que precisam de rotina, controle e apoio nas decisões."><span>02</span> Pequenas empresas <i data-feather="arrow-up-right"></i></button>
+                <button class="audience-item" data-copy="Para profissionais que querem segurança tributária sem perder tempo."><span>03</span> Profissionais liberais <i data-feather="arrow-up-right"></i></button>
+                <button class="audience-item" data-copy="Para transportadores que precisam de orientação especializada."><span>04</span> Caminhoneiros <i data-feather="arrow-up-right"></i></button>
+                <p class="audience-description" id="audience-description">Para quem começou pequeno e quer crescer organizado.</p>
             </div>
         </section>
 
-        <!-- 6. DEPOIMENTOS -->
-        <section id="depoimentos" class="py-24 bg-[#0e0e0e]">
-            <div class="container mx-auto px-6">
-                <div class="mb-20 reveal-up">
-                    <span
-                        class="font-dm-sans text-[#E8C46B] text-xs tracking-[0.3em] uppercase mb-4 block">Experiências</span>
-                    <h2 class="font-playfair text-4xl md:text-5xl">O que dizem nossos <span
-                            class="italic text-[#E8C46B]">Parceiros</span></h2>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                    <!-- Depoimento 1 -->
-                    <div class="bg-[#131313] p-12 reveal-up">
-                        <div class="text-[#E8C46B] mb-8 flex space-x-1">
-                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
-                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
-                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
-                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
-                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
-                        </div>
-                        <p class="font-playfair text-xl italic text-[#E5E2E1] mb-10 leading-relaxed">
-                            "A LM transformou minha visão sobre contabilidade. Hoje tenho clareza total dos meus números
-                            e durmo tranquilo."
-                        </p>
-                        <div class="flex items-center gap-4">
-                            <div
-                                class="w-12 h-12 rounded-full bg-[#E8C46B] flex items-center justify-center font-bold text-[#131313]">
-                                RS</div>
-                            <div>
-                                <p class="font-bold text-sm">Ricardo S.</p>
-                                <p class="text-xs text-[#D0C5B2] font-dm-sans uppercase tracking-widest">Tech Solutions
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Depoimento 2 -->
-                    <div class="bg-[#131313] p-12 reveal-up">
-                        <div class="text-[#E8C46B] mb-8 flex space-x-1">
-                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
-                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
-                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
-                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
-                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
-                        </div>
-                        <p class="font-playfair text-xl italic text-[#E5E2E1] mb-10 leading-relaxed">
-                            "Excelente suporte para quem é autônomo. O atendimento é rápido e sempre trazem soluções
-                            inteligentes."
-                        </p>
-                        <div class="flex items-center gap-4">
-                            <div
-                                class="w-12 h-12 rounded-full bg-[#E8C46B] flex items-center justify-center font-bold text-[#131313]">
-                                AM</div>
-                            <div>
-                                <p class="font-bold text-sm">Ana M.</p>
-                                <p class="text-xs text-[#D0C5B2] font-dm-sans uppercase tracking-widest">Doceria AM</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Depoimento 3 -->
-                    <div class="bg-[#131313] p-12 reveal-up">
-                        <div class="text-[#E8C46B] mb-8 flex space-x-1">
-                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
-                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
-                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
-                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
-                            <i data-feather="star" class="w-4 h-4 fill-current"></i>
-                        </div>
-                        <p class="font-playfair text-xl italic text-[#E5E2E1] mb-10 leading-relaxed">
-                            "Profissionalismo impecável. A LM cuidou de toda a migração da minha empresa sem qualquer
-                            estresse."
-                        </p>
-                        <div class="flex items-center gap-4">
-                            <div
-                                class="w-12 h-12 rounded-full bg-[#E8C46B] flex items-center justify-center font-bold text-[#131313]">
-                                PL</div>
-                            <div>
-                                <p class="font-bold text-sm">Paulo L.</p>
-                                <p class="text-xs text-[#D0C5B2] font-dm-sans uppercase tracking-widest">Construtora
-                                    PLima</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <section class="portal-showcase section-pad">
+            <div class="portal-window reveal tilt-card">
+                <div class="window-bar"><span></span><span></span><span></span><small>portal.lmcontab.com.br</small></div>
+                <div class="window-body"><div class="mini-nav"><strong>LM</strong><i data-feather="home"></i><i data-feather="folder"></i><i data-feather="check-square"></i></div><div class="mini-content"><div class="mini-greeting">Olá! Está tudo organizado por aqui 👋</div><div class="mini-cards"><span></span><span></span><span></span></div><div class="mini-lines"><i></i><i></i><i></i><i></i></div></div></div>
             </div>
+            <div class="portal-copy reveal"><span class="eyebrow-simple">Portal do cliente</span><h2>Menos troca de mensagem.<br>Mais informação no lugar certo.</h2><ul><li><i data-feather="check"></i> Arquivos organizados</li><li><i data-feather="check"></i> Andamento dos serviços</li><li><i data-feather="check"></i> Histórico sempre acessível</li></ul><a href="https://portal.lmcontab.com.br" target="_blank" rel="noopener" class="text-link">Acessar o portal <i data-feather="arrow-up-right"></i></a></div>
         </section>
 
-        <!-- 7. CTA FINAL -->
-        <section id="contato" class="py-32 bg-[#131313] relative overflow-hidden">
-            <div class="container mx-auto px-6 relative z-10">
-                <div
-                    class="bg-gradient-to-br from-[#1c1b1b] to-[#131313] p-16 md:p-24 text-center border border-[#E8C46B]/10 reveal-up">
-                    <span class="font-dm-sans text-[#E8C46B] text-xs tracking-[0.3em] uppercase mb-10 block">Pronto para
-                        começar?</span>
-                    <h2 class="font-playfair text-4xl md:text-6xl mb-12">Transforme a contabilidade da sua empresa hoje
-                    </h2>
-
-                    <div class="flex flex-col md:flex-row gap-6 justify-center">
-                        <a href="https://wa.me/5511987867389?text=Ol%C3%A1%2C%20vim%20pelo%20site%20e%20gostaria%20de%20transformar%20a%20contabilidade%20da%20minha%20empresa."
-                            target="_blank"
-                            class="bg-[#E8C46B] text-[#131313] px-12 py-5 font-bold uppercase tracking-widest hover:brightness-110 transition-all flex items-center justify-center gap-3">
-                            Falar com um especialista ↗
-                        </a>
-                        <!-- <a href="#"
-                            class="border border-[#D0C5B2] text-[#E5E2E1] px-12 py-5 font-bold uppercase tracking-widest hover:bg-[#E5E2E1] hover:text-[#131313] transition-all flex items-center justify-center gap-3">
-                            WhatsApp
-                        </a> -->
-                    </div>
-                </div>
-            </div>
-            <!-- Glow decorative icon -->
-            <div class="absolute -bottom-64 -right-64 w-[600px] h-[600px] bg-[#E8C46B]/5 rounded-full blur-[120px]">
-            </div>
+        <section id="contato" class="contact section-pad">
+            <div class="contact-shape shape-one"></div><div class="contact-shape shape-two"></div>
+            <div class="contact-content reveal"><span>Sem formulário enorme.</span><h2>Conta pra gente<br>o que você precisa.</h2><p>Uma conversa rápida já ajuda a entender o melhor caminho para você ou sua empresa.</p><a href="https://wa.me/5511987867389?text=Ol%C3%A1%2C%20visitei%20o%20site%20da%20LM%20Contabilidade%20e%20quero%20conversar." target="_blank" rel="noopener" class="whatsapp-button magnetic"><i data-feather="message-circle"></i> Chamar no WhatsApp <span>↗</span></a></div>
         </section>
     </main>
 
-    <!-- 8. FOOTER -->
-    <footer class="bg-[#0e0e0e] pt-20 pb-10 border-t border-[#E8C46B]/5">
-        <div
-            class="container mx-auto px-6 flex flex-col md:flex-row justify-center gap-20 mb-20 text-center md:text-left">
-            <div class="max-w-xs mx-auto md:mx-0">
-                <div
-                    class="flex items-center justify-center md:justify-start space-x-2 text-xl font-playfair font-bold text-[#E8C46B] mb-8">
-                    <span>LM Contabilidade</span>
-                </div>
-                <p class="text-[#D0C5B2] text-sm leading-relaxed mb-6">
-                    Excelência contábil e consultoria estratégica para negócios que buscam segurança jurídica e
-                    crescimento sustentável.
-                </p>
-                <div class="inline-flex items-center gap-2 border border-[#E8C46B]/30 rounded px-4 py-2 bg-[#E8C46B]/5">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#E8C46B]" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <rect x="3" y="3" width="18" height="18" rx="2" />
-                        <path d="M9 9h6M9 12h6M9 15h4" />
-                    </svg>
-                    <span class="text-[#E8C46B] text-xs font-bold tracking-widest uppercase">CRC-1SP358328</span>
-                </div>
-            </div>
-
-            <div class="mx-auto md:mx-0">
-                <h4 class="font-playfair text-[#E8C46B] mb-8">Contato</h4>
-                <ul class="space-y-4 text-sm text-[#D0C5B2]">
-                    <li class="flex items-center justify-center md:justify-start gap-3">
-                        <i data-feather="mail" class="w-4 h-4 text-[#E8C46B] flex-shrink-0"></i>
-                        <a href="mailto:lmcontabilidade@lmcontab.com.br"
-                            class="hover:text-[#E8C46B] transition-colors">lmcontabilidade@lmcontab.com.br</a>
-                    </li>
-                    <li class="flex items-center justify-center md:justify-start gap-3">
-                        <i data-feather="phone" class="w-4 h-4 text-[#E8C46B] flex-shrink-0"></i>
-                        <span>+55 (11) 98786-7389</span>
-                        <a href="https://wa.me/5511987867389?text=Ol%C3%A1%2C%20visitei%20o%20site%20da%20LM%20Contabilidade%20e%20gostaria%20de%20tirar%20d%C3%BAvidas."
-                            target="_blank"
-                            class="inline-flex items-center gap-1.5 bg-[#25D366]/10 hover:bg-[#25D366]/20 text-[#25D366] border border-[#25D366]/30 rounded px-2.5 py-1 text-xs font-semibold transition-all">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24"
-                                fill="currentColor">
-                                <path
-                                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                            </svg>
-                            WhatsApp
-                        </a>
-                    </li>
-                    <li class="flex items-center justify-center md:justify-start gap-3">
-                        <i data-feather="map-pin" class="w-4 h-4 text-[#E8C46B] flex-shrink-0"></i>
-                        São Paulo, SP
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="container mx-auto px-6 pt-10 border-t border-[#E8C46B]/5 flex justify-center items-center">
-            <p class="text-[#D0C5B2]/40 text-[10px] uppercase tracking-widest font-bold text-center">
-                © 2026 LM Contabilidade. Lucas Marcelino. Todos os direitos reservados.
-            </p>
-        </div>
+    <footer>
+        <div class="footer-main"><div><img src="Logo.png" alt="LM Contabilidade"><p>Contabilidade próxima, organizada e fácil de entender.</p></div><div><strong>Contato</strong><a href="mailto:lmcontabilidade@lmcontab.com.br">lmcontabilidade@lmcontab.com.br</a><a href="https://wa.me/5511987867389" target="_blank" rel="noopener">(11) 98786-7389</a><span>São Paulo · atendimento em todo o Brasil</span></div><div><strong>Acessos</strong><a href="https://portal.lmcontab.com.br" target="_blank" rel="noopener">Portal do cliente ↗</a><a href="#inicio">Voltar ao topo ↑</a></div></div>
+        <div class="footer-bottom"><span>© 2026 LM Contabilidade</span><span>CRC-1SP358328</span></div>
     </footer>
-
-    <!-- Scripts -->
     <script src="scripts.js"></script>
 </body>
-
 </html>
