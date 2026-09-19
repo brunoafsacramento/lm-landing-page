@@ -142,15 +142,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const audienceDescription = document.getElementById('audience-description');
-    document.querySelectorAll('.audience-item').forEach(item => {
-        const activate = () => {
-            document.querySelectorAll('.audience-item').forEach(other => other.classList.remove('active'));
-            item.classList.add('active');
-            if (audienceDescription) audienceDescription.textContent = item.dataset.copy;
-        };
-        item.addEventListener('mouseenter', activate);
-        item.addEventListener('focus', activate);
-        item.addEventListener('click', activate);
-    });
 });
