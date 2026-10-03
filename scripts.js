@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    if (window.feather) feather.replace();
     const menuButton = document.getElementById('menu-toggle');
     const menu = document.getElementById('mobile-menu');
     const closeMenu = () => { menu?.classList.remove('open'); menuButton?.setAttribute('aria-expanded', 'false'); };
