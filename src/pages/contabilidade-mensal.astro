@@ -1,0 +1,92 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Faq from '../components/Faq.astro';
+import ContactBand from '../components/ContactBand.astro';
+import { site } from '../data/site';
+import { planos, brl } from '../data/precos';
+import { linkWhatsApp } from '../lib/whatsapp';
+
+const mensagem = 'Olá! Quero conhecer os planos de contabilidade mensal.';
+const origem = 'site-mensal';
+const whatsapp = linkWhatsApp(mensagem, origem);
+const visiveis = planos.filter((p) => p.exibir);
+const ano = new Date().getFullYear();
+
+const perguntas = [
+  { p: 'Como funciona a troca de contador?', r: 'Você nos conta a situação da empresa, fechamos o plano e orientamos o que pedir ao contador atual (balancetes, livros, folha e guias). A partir do mês combinado, a LM assume as obrigações.' },
+  { p: 'Posso trocar de contador no meio do ano?', r: 'Sim. A troca pode ser feita em qualquer mês. O ideal é combinar a data para que nenhuma obrigação fique sem responsável na transição.' },
+  { p: 'O que muda o valor da mensalidade?', r: 'O faturamento da empresa, a quantidade de funcionários e sócios e o volume de notas e extratos. Os adicionais de cada plano estão na tabela acima.' },
+  { p: 'Como acompanho o que está sendo feito?', r: 'Pelo portal do cliente, onde ficam documentos, guias, solicitações e o histórico dos serviços, e pelo WhatsApp.' },
+];
+
+const schema = [{
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Contabilidade mensal',
+  serviceType: 'Contabilidade mensal para PF, MEI, ME e EPP',
+  url: `${site.url}/contabilidade-mensal`,
+  provider: { '@id': `${site.url}/#lm` },
+  areaServed: 'BR',
+  offers: visiveis.map((p) => ({ '@type': 'Offer', name: p.nome, price: p.preco, priceCurrency: 'BRL', description: `${p.limite}. Mensalidade.` })),
+}, {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: perguntas.map((q) => ({ '@type': 'Question', name: q.p, acceptedAnswer: { '@type': 'Answer', text: q.r } })),
+}];
+---
+<Base
+  title="Contabilidade mensal para MEI, ME e EPP: planos e preços | LM Contabilidade"
+  description={`Planos de contabilidade mensal a partir de ${brl(Math.min(...visiveis.map((p) => p.preco)))} por mês, para pessoa física, MEI, ME e EPP. Troque de contador sem complicação.`}
+  mensagem={mensagem}
+  origem={origem}
+  schema={schema}
+>
+  <section class="service-hero">
+    <div class="shell">
+      <p class="breadcrumb"><a href="/">Início</a> / Contabilidade mensal</p>
+      <h1>Quer trocar de contador? Veja os planos e o preço de cada um.</h1>
+      <p class="lead">Mensalidade fixa, adicionais claros e atendimento pelo WhatsApp e pelo portal do cliente.</p>
+      <div class="btn-row">
+        <a href={whatsapp} target="_blank" rel="noopener" class="btn btn-whatsapp"><Icon name="whatsapp" /> Conversar no WhatsApp</a>
+        <a href="#contato" class="btn btn-outline">Prefiro ser chamado</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell">
+      <div class="section-head"><div><h2>Planos {ano}</h2><p>Valores mensais. Os adicionais só entram quando o volume passa do que o plano inclui.</p></div></div>
+      <div class="plan-grid">
+        {visiveis.map((p) => (
+          <article class="plan">
+            <span class="para">{p.para}</span>
+            <h3>{p.nome}</h3>
+            <div class="price"><strong>{brl(p.preco)}</strong><span>/mês</span></div>
+            <span class="limite">{p.limite}</span>
+            <ul>{p.adicionais.map((a) => <li>{a}</li>)}</ul>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="shell two-col">
+      <div>
+        <h2 style="margin-bottom:28px">Como é a troca</h2>
+        <ol class="steps">
+          <li>Você conta pelo WhatsApp o tipo de empresa, o faturamento e quantas pessoas trabalham nela.</li>
+          <li>Indicamos o plano e enviamos a proposta com o valor fechado.</li>
+          <li>Orientamos o que pedir ao contador atual e assumimos a partir do mês combinado.</li>
+        </ol>
+      </div>
+      <div>
+        <h2 style="margin-bottom:24px">Perguntas frequentes</h2>
+        <Faq perguntas={perguntas} />
+      </div>
+    </div>
+  </section>
+
+  <ContactBand whatsapp={whatsapp} origem={origem} servico="Contabilidade mensal / trocar de contador" titulo="Mande uma mensagem e receba a proposta." />
+</Base>

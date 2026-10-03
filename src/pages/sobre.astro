@@ -1,0 +1,46 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import ContactBand from '../components/ContactBand.astro';
+import { site } from '../data/site';
+import { linkWhatsApp } from '../lib/whatsapp';
+
+const mensagem = 'Olá! Vim pelo site e gostaria de conversar.';
+const whatsapp = linkWhatsApp(mensagem, 'site-sobre');
+---
+<Base
+  title="Sobre a LM Contabilidade | Contador em São Paulo"
+  description={`Conheça a LM Contabilidade e o contador responsável, ${site.responsavel} (${site.crc}). Atendimento em São Paulo e em todo o Brasil.`}
+  mensagem={mensagem}
+  origem="site-sobre"
+  schema={[{ '@context': 'https://schema.org', '@type': 'AboutPage', name: 'Sobre a LM Contabilidade', mainEntity: { '@id': `${site.url}/#lm` } }]}
+>
+  <section class="service-hero">
+    <div class="shell">
+      <p class="breadcrumb"><a href="/">Início</a> / Sobre</p>
+      <div class="person" style={site.fotoResponsavel ? '' : 'grid-template-columns:1fr'}>
+        {site.fotoResponsavel && <img src={site.fotoResponsavel} alt={`${site.responsavel}, contador da LM Contabilidade`} width="220" height="220" />}
+        <div>
+          <h1>{site.responsavel}</h1>
+          <p class="person-role">Contador responsável · {site.crc}</p>
+          <p class="lead" style="margin:0">{site.bioResponsavel ?? 'A LM Contabilidade cuida da contabilidade de empresas, MEIs e profissionais liberais e resolve as pendências de pessoas físicas, do Imposto de Renda à regularização de imóveis.'}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell">
+      <h2 style="margin-bottom:28px">Como a LM trabalha</h2>
+      <ul class="check-list">
+        <li><Icon name="check" size={22} /> Preço informado e orçamento fechado antes de começar.</li>
+        <li><Icon name="check" size={22} /> Atendimento pelo WhatsApp, por e-mail e pelo portal do cliente.</li>
+        <li><Icon name="check" size={22} /> Documentos, guias e histórico de cada cliente organizados no portal.</li>
+        <li><Icon name="check" size={22} /> Clientes em São Paulo e em todo o Brasil, com atendimento a distância.</li>
+      </ul>
+      <p style="margin-top:28px;color:var(--muted)">O registro {site.crc} pode ser consultado no site do Conselho Regional de Contabilidade de São Paulo (CRC-SP).</p>
+    </div>
+  </section>
+
+  <ContactBand whatsapp={whatsapp} origem="site-sobre" />
+</Base>

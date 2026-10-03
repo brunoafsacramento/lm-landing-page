@@ -1,0 +1,113 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Faq from '../components/Faq.astro';
+import ContactBand from '../components/ContactBand.astro';
+import { fiscal, fiscalJson } from '../data/fiscal';
+import { brl } from '../data/precos';
+import { servicoPorSlug } from '../data/servicos';
+import { linkWhatsApp } from '../lib/whatsapp';
+
+const mensagem = 'Olá! Usei a calculadora de limite do MEI no site e quero orientação.';
+const whatsapp = linkWhatsApp(mensagem, 'site-limite-mei');
+const ano = new Date().getFullYear();
+const meses = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+const perguntas = servicoPorSlug('mei').perguntas.slice(0, 4);
+---
+<Base
+  title="Passei do limite do MEI? Calculadora de faturamento | LM Contabilidade"
+  description={`Digite quanto o seu MEI faturou no ano e veja se passou do limite de ${brl(fiscal.mei.limiteAnual)}, quanto passou e o que fazer.`}
+  mensagem={mensagem}
+  origem="site-limite-mei"
+  schema={[{ '@context': 'https://schema.org', '@type': 'WebApplication', name: 'Calculadora de limite do MEI', applicationCategory: 'FinanceApplication', operatingSystem: 'Web', offers: { '@type': 'Offer', price: 0, priceCurrency: 'BRL' } }]}
+>
+  <section class="service-hero">
+    <div class="narrow">
+      <p class="breadcrumb"><a href="/">Início</a> / <a href="/mei">MEI</a> / Limite</p>
+      <h1>Passei do limite do MEI?</h1>
+      <p class="lead">Digite quanto o MEI faturou neste ano e veja se passou do limite, quanto passou e o que fazer agora.</p>
+
+      <script type="application/json" id="lm-fiscal" set:html={fiscalJson} />
+      <form class="tool" id="mei-form" data-whatsapp={whatsapp}>
+        <div class="tool-row">
+          <div class="field">
+            <label for="mei-fat">Faturamento de {ano} até agora</label>
+            <input id="mei-fat" name="faturamento" type="text" inputmode="numeric" placeholder="Ex.: 75.000" required />
+          </div>
+          <div class="field">
+            <label for="mei-abertura">Quando o MEI foi aberto?</label>
+            <select id="mei-abertura" name="abertura">
+              <option value="">Antes de {ano}</option>
+              {meses.map((m, i) => <option value={i + 1}>Em {m} de {ano}</option>)}
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-dark" style="margin-top:16px">Calcular</button>
+
+        <div class="tool-result" id="mei-resultado" hidden aria-live="polite">
+          <h3 id="mei-titulo"></h3>
+          <p class="big" id="mei-valor"></p>
+          <p id="mei-texto"></p>
+          <a id="mei-whatsapp" class="btn btn-whatsapp" style="margin-top:18px" target="_blank" rel="noopener" href={whatsapp}><Icon name="whatsapp" /> Falar com um contador</a>
+        </div>
+        <p class="tool-note">Valores vigentes em {fiscal.vigencia}: limite anual de {brl(fiscal.mei.limiteAnual)}, ou {brl(fiscal.mei.limiteMensalProporcional)} por mês no ano de abertura. Não vale para o MEI Caminhoneiro, que tem limite próprio.</p>
+      </form>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="narrow">
+      <h2 style="margin-bottom:24px">Perguntas frequentes</h2>
+      <Faq perguntas={perguntas} />
+      <p style="margin-top:24px"><a href="/mei" class="text-link">Ver tudo sobre MEI: abertura, desenquadramento e baixa</a></p>
+    </div>
+  </section>
+
+  <ContactBand whatsapp={whatsapp} origem="site-limite-mei" servico="MEI: limite, abertura ou baixa" />
+</Base>
+
+<script>
+  import { lerFiscal } from '../lib/calculos';
+  import { avaliarLimiteMei } from '../lib/calculos';
+
+  const fiscal = lerFiscal();
+  const tol = `${Math.round(fiscal.mei.tolerancia * 100)}%`;
+
+  const form = document.getElementById('mei-form') as HTMLFormElement;
+  const moeda = (v: number) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+  let usado = false;
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const faturamento = Number((form.faturamento.value as string).replace(/\./g, '').replace(',', '.').replace(/[^\d.]/g, ''));
+    if (!faturamento && faturamento !== 0) { form.faturamento.focus(); return; }
+    const mes = Number(form.abertura.value) || null;
+    const r = avaliarLimiteMei(fiscal, faturamento, mes);
+
+    const titulo = document.getElementById('mei-titulo')!;
+    const valor = document.getElementById('mei-valor')!;
+    const texto = document.getElementById('mei-texto')!;
+    const limiteTxt = mes ? `${moeda(r.limite)} (proporcional a ${r.meses} meses)` : moeda(r.limite);
+
+    if (r.situacao === 'dentro') {
+      titulo.textContent = 'Você está dentro do limite.';
+      valor.textContent = `Ainda cabem ${moeda(r.folga)}`;
+      texto.textContent = `O seu limite neste ano é de ${limiteTxt}. Se a previsão até dezembro passar disso, vale planejar a mudança para ME com antecedência.`;
+    } else if (r.situacao === 'ate20') {
+      titulo.textContent = `Você passou do limite, mas em até ${tol}.`;
+      valor.textContent = `Passou ${moeda(r.excesso)}`;
+      texto.textContent = `Limite: ${limiteTxt}. Você continua MEI até dezembro, paga um DAS complementar sobre o valor excedente e, em janeiro, a empresa passa a ser microempresa (ME). É preciso comunicar o desenquadramento.`;
+    } else {
+      titulo.textContent = `Você passou mais de ${tol} do limite.`;
+      valor.textContent = `Passou ${moeda(r.excesso)}`;
+      texto.textContent = `Limite: ${limiteTxt}. O desenquadramento volta para janeiro (ou para a abertura) e os impostos do período passam a ser calculados como microempresa. Quanto antes regularizar, menores os juros e as multas.`;
+    }
+    document.getElementById('mei-resultado')!.hidden = false;
+
+    const msg = `Olá! Usei a calculadora do limite do MEI: faturei ${moeda(faturamento)} este ano. (site-limite-mei)`;
+    const link = document.getElementById('mei-whatsapp') as HTMLAnchorElement;
+    link.href = form.dataset.whatsapp!.replace(/\?text=.*/, `?text=${encodeURIComponent(msg)}`);
+
+    if (!usado) { usado = true; window.lmEvento?.('uso_simulador', { ferramenta: 'limite-mei', situacao: r.situacao }); }
+  });
+</script>

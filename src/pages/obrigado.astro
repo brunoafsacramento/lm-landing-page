@@ -1,0 +1,34 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+import { linkWhatsApp } from '../lib/whatsapp';
+
+const whatsapp = linkWhatsApp('Olá! Acabei de deixar meu contato no site e prefiro adiantar a conversa.', 'site-obrigado');
+---
+<Base title="Recebemos o seu contato | LM Contabilidade" description="Recebemos o seu contato. A LM Contabilidade vai chamar você pelo WhatsApp." origem="site-obrigado" noindex>
+  <section class="section">
+    <div class="narrow">
+      <h1>Recebemos o seu contato.</h1>
+      <p class="lead" style="margin:20px 0 28px;color:var(--muted);font-size:19px">
+        A gente vai chamar você pelo WhatsApp{site.horario ? ` (${site.horario.toLowerCase()})` : ''}. Se quiser, pode adiantar a conversa agora.
+      </p>
+      <a href={whatsapp} target="_blank" rel="noopener" class="btn btn-whatsapp"><Icon name="whatsapp" /> Prefere adiantar? Fale agora no WhatsApp</a>
+      <p style="margin-top:28px"><a href="/" class="text-link">Voltar para o início</a></p>
+    </div>
+  </section>
+</Base>
+
+<script>
+  // Conversão: dispara uma vez, só para quem acabou de enviar o formulário.
+  // DOMContentLoaded garante que o script comum (lmEvento) já rodou.
+  document.addEventListener('DOMContentLoaded', () => {
+    try {
+      const lead = sessionStorage.getItem('lm_lead');
+      if (lead) {
+        sessionStorage.removeItem('lm_lead');
+        window.lmEvento?.('envio_formulario', JSON.parse(lead));
+      }
+    } catch { /* armazenamento indisponível */ }
+  });
+</script>

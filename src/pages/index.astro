@@ -1,0 +1,157 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Faq from '../components/Faq.astro';
+import ContactBand from '../components/ContactBand.astro';
+import { site } from '../data/site';
+import { servicos, servicoPorSlug } from '../data/servicos';
+import { avulsos, planos, brl } from '../data/precos';
+import { linkWhatsApp, MENSAGEM_HOME } from '../lib/whatsapp';
+
+const whatsapp = linkWhatsApp(MENSAGEM_HOME, 'site-home');
+const menorMensal = Math.min(...planos.filter((p) => p.exibir).map((p) => p.preco));
+const aPartirDe = (codigos: string[]) => Math.min(...codigos.map((c) => avulsos[c].preco));
+
+const atalhos = [
+  { href: '/imposto-de-renda', label: 'Meu IR' },
+  { href: '/mei', label: 'Meu MEI' },
+  { href: '/abrir-empresa', label: 'Abrir empresa' },
+  { href: '/contabilidade-mensal', label: 'Trocar de contador' },
+];
+
+const resumo = [
+  { nome: 'Imposto de Renda', preco: brl(avulsos.IR.preco) },
+  { nome: 'MEI: abertura ou baixa', preco: brl(avulsos.MEI.preco) },
+  { nome: 'Abertura de empresa', preco: brl(avulsos.ABR.preco) },
+  { nome: 'Contabilidade mensal', preco: `${brl(menorMensal)}/mês` },
+];
+
+const cartoes = [
+  ...servicos.map((s) => ({ href: `/${s.slug}`, nome: s.menu, texto: s.subtitulo, preco: s.precos.length ? brl(aPartirDe(s.precos)) : null, sufixo: '' })),
+  { href: '/contabilidade-mensal', nome: 'Contabilidade mensal', texto: 'Planos para PF, MEI, ME e EPP, com o que está incluído e os adicionais na tabela.', preco: brl(menorMensal), sufixo: '/mês' },
+];
+
+const perguntas = [
+  servicoPorSlug('imposto-de-renda').perguntas[0],
+  servicoPorSlug('mei').perguntas[1],
+  servicoPorSlug('mei-divida-ativa').perguntas[1],
+  servicoPorSlug('abrir-empresa').perguntas[0],
+  servicoPorSlug('pf-ou-pj').perguntas[0],
+  { p: 'Vocês atendem fora de São Paulo?', r: 'Sim. O atendimento é pelo WhatsApp, e-mail e portal do cliente, então atendemos clientes de todo o Brasil.' },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: perguntas.map((q) => ({ '@type': 'Question', name: q.p, acceptedAnswer: { '@type': 'Answer', text: q.r } })),
+};
+---
+<Base
+  title="Contador em São Paulo para empresas, MEIs e pessoas físicas | LM Contabilidade"
+  description="Imposto de Renda, MEI, abertura de empresa e contabilidade mensal em São Paulo, com preço a partir de R$ 160. Fale com a LM Contabilidade pelo WhatsApp."
+  schema={[faqSchema]}
+>
+  <section class="hero">
+    <div class="shell">
+      <div class="hero-grid">
+        <div>
+          <h1>Contador em São Paulo para empresas, MEIs, EPPs e pessoas físicas</h1>
+          <p class="hero-lead">Imposto de Renda, MEI, abertura de empresa e contabilidade mensal. Você sabe o preço antes de começar e resolve tudo pelo WhatsApp.</p>
+          <div class="btn-row">
+            <a href={whatsapp} target="_blank" rel="noopener" class="btn btn-whatsapp"><Icon name="whatsapp" /> Conversar no WhatsApp</a>
+            <a href="#contato" class="text-link">Prefiro ser chamado</a>
+          </div>
+          {site.respostaWhatsApp && <p class="response-note">{site.respostaWhatsApp}</p>}
+        </div>
+        {site.fotoResponsavel ? (
+          <figure class="hero-photo" style="margin:0"><img src={site.fotoResponsavel} alt={`${site.responsavel}, contador da LM Contabilidade`} width="480" height="600" /></figure>
+        ) : (
+          <aside class="hero-card" aria-label="Preços de referência">
+            <dl>
+              {resumo.map((r) => <div><dt>{r.nome}</dt><dd><small>a partir de</small>{r.preco}</dd></div>)}
+            </dl>
+            <p class="card-note">Orçamento fechado antes de começar.</p>
+          </aside>
+        )}
+      </div>
+
+      <nav class="quick-links" aria-labelledby="atalhos-titulo">
+        <h2 id="atalhos-titulo">Do que você precisa hoje?</h2>
+        <div class="quick-grid">
+          {atalhos.map((a) => <a href={a.href}>{a.label} <Icon name="arrow" size={18} /></a>)}
+        </div>
+      </nav>
+    </div>
+  </section>
+
+  <section class="proof-bar" aria-label="Credenciais">
+    <div class="shell proof-inner">
+      {site.provas.map((p) => <span><strong>{p.valor}</strong>{p.rotulo}</span>)}
+      {site.anoInicio && <span><strong>{new Date().getFullYear() - site.anoInicio} anos</strong>de atuação</span>}
+      <span><strong>{site.crc}</strong>registro no Conselho Regional de Contabilidade</span>
+      <span><strong>Brasil</strong>atendimento em todos os estados</span>
+    </div>
+  </section>
+
+  <section class="section" id="servicos">
+    <div class="shell">
+      <div class="section-head">
+        <div><h2>Serviços e preços</h2><p>Valores de referência. O orçamento final depende do seu caso e é sempre fechado antes de começar.</p></div>
+      </div>
+      <div class="service-grid">
+        {cartoes.map((c) => (
+          <a class="service-card" href={c.href}>
+            <h3>{c.nome}</h3>
+            <p>{c.texto}</p>
+            {c.preco && <div class="price"><small>a partir de</small><strong>{c.preco}</strong>{c.sufixo && <span style="color:var(--muted);font:500 15px var(--body)">{c.sufixo}</span>}</div>}
+            <span class="more">Ver detalhes →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="shell person" style={site.fotoResponsavel ? '' : 'grid-template-columns:1fr'}>
+      {site.fotoResponsavel && <img src={site.fotoResponsavel} alt={site.responsavel} width="220" height="220" loading="lazy" />}
+      <div>
+        <h2>Quem atende</h2>
+        <p class="person-role">{site.responsavel} · contador · {site.crc}</p>
+        <p style="max-width:640px;color:var(--ink-soft)">{site.bioResponsavel ?? 'A LM Contabilidade atende empresas, MEIs, profissionais liberais e pessoas físicas de todo o Brasil, com atendimento pelo WhatsApp e um portal onde cada cliente acompanha documentos, solicitações e serviços.'}</p>
+        <p style="margin-top:16px"><a href="/sobre" class="text-link">Conheça a LM</a></p>
+      </div>
+    </div>
+  </section>
+
+  {site.depoimentos.length > 0 && (
+    <section class="section">
+      <div class="shell">
+        <h2 style="margin-bottom:28px">O que dizem os clientes</h2>
+        <div class="quotes">
+          {site.depoimentos.slice(0, 5).map((d) => <figure><blockquote>“{d.texto}”</blockquote><figcaption>{d.nome}</figcaption></figure>)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="section">
+    <div class="shell two-col">
+      <div>
+        <h2>Ferramentas gratuitas</h2>
+        <p style="margin:12px 0 24px;color:var(--muted)">Respostas rápidas para as dúvidas que mais chegam no WhatsApp.</p>
+        <div class="price-table">
+          <a class="price-row" href="/limite-mei" style="text-decoration:none"><h3>Passei do limite do MEI?</h3><p>Digite o faturamento do ano e veja o que fazer.</p></a>
+          <a class="price-row" href="/pf-ou-pj#simulador" style="text-decoration:none"><h3>Simulador PF x PJ</h3><p>Compare os impostos como pessoa física e como empresa.</p></a>
+          <a class="price-row" href="/checklist-imposto-de-renda" style="text-decoration:none"><h3>Checklist do Imposto de Renda</h3><p>A lista de documentos para separar antes de declarar.</p></a>
+          <a class="price-row" href="/calendario-de-prazos" style="text-decoration:none"><h3>Calendário de prazos</h3><p>DAS, DASN-SIMEI, IR e opção pelo Simples.</p></a>
+        </div>
+      </div>
+      <div>
+        <h2 style="margin-bottom:24px">Perguntas frequentes</h2>
+        <Faq perguntas={perguntas} />
+      </div>
+    </div>
+  </section>
+
+  <ContactBand whatsapp={whatsapp} origem="site-home" />
+</Base>

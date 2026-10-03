@@ -1,0 +1,83 @@
+---
+// Rascunho para revisão do Lucas. Pendentes: razão social, CNPJ, endereço e o prazo de guarda (12 meses é proposta).
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+
+const controlador = site.razaoSocial ?? site.nome;
+const atualizacao = '3 de outubro de 2026';
+const PRAZO_GUARDA_LEADS = '12 meses';
+---
+<Base
+  title="Política de privacidade | LM Contabilidade"
+  description="Como a LM Contabilidade trata os dados pessoais enviados pelo site, pelo WhatsApp e pelo formulário de contato, e como exercer os seus direitos pela LGPD."
+>
+  <section class="section">
+    <article class="narrow prose">
+      <p class="breadcrumb"><a href="/">Início</a> / Política de privacidade</p>
+      <h1>Política de privacidade</h1>
+      <p style="margin-top:16px">Última atualização: {atualizacao}.</p>
+
+      <h2>Quem trata os seus dados</h2>
+      <p>
+        O controlador dos dados é {controlador}{site.cnpj && `, CNPJ ${site.cnpj}`}{site.endereco && `, com sede em ${site.endereco.rua}, ${site.endereco.bairro}, ${site.cidade} – ${site.uf}`}.
+        Para qualquer assunto sobre dados pessoais, fale com a gente pelo e-mail <a href={`mailto:${site.email}`} class="text-link">{site.email}</a>.
+      </p>
+
+      <h2>Quais dados coletamos</h2>
+      <ul>
+        <li><strong>Formulário de contato:</strong> nome, número de WhatsApp, assunto escolhido e, se você quiser, a descrição do que aconteceu.</li>
+        <li><strong>Dados de origem da visita:</strong> a página onde o formulário foi enviado e, quando existirem no link, os parâmetros de campanha (utm_source, utm_medium, utm_campaign) e o identificador de clique do Google Ads (gclid).</li>
+        <li><strong>Segurança:</strong> uma versão cifrada do endereço IP, usada só para bloquear envios automáticos em excesso.</li>
+        <li><strong>Cookies de medição:</strong> apenas se você aceitar no aviso de cookies (veja abaixo).</li>
+      </ul>
+      <p>Não pedimos CPF, CNPJ nem documentos pelo site. Quando você nos contrata, os documentos necessários ao serviço são tratados conforme o contrato de prestação de serviços.</p>
+
+      <h2>Para que usamos</h2>
+      <ul>
+        <li>Responder ao seu pedido e enviar o orçamento pelo WhatsApp (base legal: consentimento, que você dá ao marcar a caixa do formulário).</li>
+        <li>Saber quais páginas e campanhas trazem contatos, para melhorar o site e os anúncios (base legal: consentimento, pelo aviso de cookies).</li>
+        <li>Proteger o site contra spam e abuso (base legal: legítimo interesse).</li>
+      </ul>
+      <p>Não vendemos nem alugamos dados pessoais.</p>
+
+      <h2>Com quem compartilhamos</h2>
+      <p>Usamos fornecedores que tratam dados em nosso nome, sob nossas instruções:</p>
+      <ul>
+        <li>Vercel, que hospeda o site;</li>
+        <li>Supabase, onde ficam guardados os contatos recebidos pelo formulário;</li>
+        <li>Google (Analytics e Google Ads) e Meta (Facebook e Instagram), somente se você aceitar os cookies de medição.</li>
+      </ul>
+      <p>Alguns desses fornecedores podem armazenar dados fora do Brasil, com as garantias previstas na LGPD.</p>
+
+      <h2>Por quanto tempo guardamos</h2>
+      <p>
+        Os contatos que não viram contratação são guardados por até {PRAZO_GUARDA_LEADS} e depois apagados. Se você se tornar cliente, os dados passam a seguir o contrato
+        e os prazos de guarda exigidos pela legislação contábil e fiscal.
+      </p>
+
+      <h2 id="cookies">Cookies</h2>
+      <p>
+        O site funciona sem cookies de medição. O Google Analytics, a tag do Google Ads e o pixel da Meta só são carregados se você clicar em “Aceitar” no aviso de cookies.
+        Se clicar em “Recusar”, nada disso é carregado. Você pode mudar a escolha a qualquer momento pelo link “Preferências de cookies”, no rodapé.
+      </p>
+      <p>Guardamos no seu navegador apenas a sua escolha sobre os cookies e, durante a visita, os parâmetros de campanha do link que trouxe você até aqui.</p>
+
+      <h2>Os seus direitos</h2>
+      <p>Pela LGPD (art. 18), você pode, a qualquer momento:</p>
+      <ul>
+        <li>confirmar se tratamos dados seus e ter acesso a eles;</li>
+        <li>corrigir dados incompletos ou desatualizados;</li>
+        <li>pedir a eliminação dos dados tratados com base no seu consentimento, ou retirar o consentimento;</li>
+        <li>pedir informações sobre com quem compartilhamos os dados;</li>
+        <li>pedir a portabilidade dos dados.</li>
+      </ul>
+      <p>Basta escrever para <a href={`mailto:${site.email}`} class="text-link">{site.email}</a>. Respondemos em até 15 dias. Você também pode reclamar à Autoridade Nacional de Proteção de Dados (ANPD).</p>
+
+      <h2>Segurança</h2>
+      <p>Os dados trafegam com criptografia (HTTPS) e ficam em bancos com acesso restrito à equipe da LM.</p>
+
+      <h2>Mudanças nesta política</h2>
+      <p>Quando esta política mudar, a data de atualização no topo da página também muda.</p>
+    </article>
+  </section>
+</Base>

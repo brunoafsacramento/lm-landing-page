@@ -1,0 +1,51 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import ContactBand from '../components/ContactBand.astro';
+import { fiscal } from '../data/fiscal';
+import { linkWhatsApp } from '../lib/whatsapp';
+
+// Prazos recorrentes. Datas fixas por lei; o IR tem o prazo divulgado pela Receita a cada ano.
+const prazos = [
+  { quando: 'Todo dia 20', titulo: 'DAS do MEI e do Simples Nacional', texto: 'Guia mensal de impostos. Se o dia 20 cair em fim de semana ou feriado, confira o vencimento impresso na guia.', para: 'MEI, ME e EPP' },
+  { quando: 'Último dia útil do mês seguinte', titulo: 'Carnê-leão', texto: 'Imposto mensal de quem recebe de pessoas físicas ou do exterior (aluguel, autônomo, pensão).', para: 'Pessoa física' },
+  { quando: 'Último dia útil do mês seguinte à venda', titulo: 'Ganho de capital', texto: 'Imposto sobre o lucro na venda de imóvel, veículo ou outros bens.', para: 'Pessoa física' },
+  { quando: 'Último dia útil de janeiro', titulo: 'Opção pelo Simples Nacional', texto: 'Prazo para empresas já abertas entrarem no Simples no ano. Também é quando o MEI que passou do limite vira ME.', para: 'ME e EPP' },
+  { quando: '31 de março', titulo: 'DEFIS', texto: 'Declaração anual das empresas do Simples Nacional.', para: 'ME e EPP' },
+  { quando: 'Março a maio', titulo: 'Declaração de Imposto de Renda', texto: 'O prazo exato é divulgado pela Receita no início de cada ano. Quem tem restituição e entrega cedo recebe antes.', para: 'Pessoa física' },
+  { quando: '31 de maio', titulo: 'DASN-SIMEI', texto: 'Declaração anual de faturamento do MEI, referente ao ano anterior.', para: 'MEI' },
+  { quando: 'Novembro a janeiro', titulo: 'Revisão do limite do MEI', texto: `Hora de conferir se o faturamento do ano passou de ${fiscal.mei.limiteAnual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 })} e planejar a mudança para ME.`, para: 'MEI' },
+];
+
+const mensagem = 'Olá! Quero receber pelo WhatsApp os lembretes dos prazos de impostos.';
+const whatsapp = linkWhatsApp(mensagem, 'site-calendario');
+---
+<Base
+  title="Calendário de prazos: DAS, DASN-SIMEI, IR e Simples Nacional | LM Contabilidade"
+  description="Datas de vencimento do DAS, DASN-SIMEI, Imposto de Renda, carnê-leão, DEFIS e opção pelo Simples Nacional, em um só lugar."
+  mensagem={mensagem}
+  origem="site-calendario"
+>
+  <section class="service-hero">
+    <div class="shell">
+      <p class="breadcrumb"><a href="/">Início</a> / Calendário de prazos</p>
+      <h1>Calendário de prazos de impostos</h1>
+      <p class="lead">As datas que MEIs, empresas e pessoas físicas não podem perder. Quer ser avisado? Peça os lembretes pelo WhatsApp.</p>
+      <a href={whatsapp} target="_blank" rel="noopener" class="btn btn-whatsapp"><Icon name="whatsapp" /> Quero receber os lembretes</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell calendar">
+      {prazos.map((p) => (
+        <article>
+          <div class="when">{p.quando}</div>
+          <div><h3>{p.titulo}</h3><p>{p.texto} <strong style="color:var(--ink-soft)">Para: {p.para}.</strong></p></div>
+        </article>
+      ))}
+      <p class="tool-note">Informações vigentes em {fiscal.vigencia}. Datas que caem em fim de semana ou feriado podem ser antecipadas ou prorrogadas conforme cada obrigação.</p>
+    </div>
+  </section>
+
+  <ContactBand whatsapp={whatsapp} origem="site-calendario" />
+</Base>

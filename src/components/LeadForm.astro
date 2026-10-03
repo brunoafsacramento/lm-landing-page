@@ -1,0 +1,67 @@
+---
+// Formulário curto (seção 6.1): nome, WhatsApp, serviço e mensagem opcional.
+// Envia para /api/lead; os campos ocultos levam página de origem, UTMs e gclid.
+import { opcoesServico } from '../data/servicos';
+import { linkWhatsApp, MENSAGEM_HOME } from '../lib/whatsapp';
+
+interface Props {
+  id?: string;
+  servico?: string;
+  origem: string;
+  titulo?: string;
+  botao?: string;
+  destino?: string; // página após o envio
+  mostrarMensagem?: boolean;
+}
+const {
+  id = 'formulario',
+  servico = '',
+  origem,
+  titulo = 'Prefere que a gente chame você?',
+  botao = 'Quero ser chamado no WhatsApp',
+  destino = '/obrigado',
+  mostrarMensagem = true,
+} = Astro.props;
+const fallback = linkWhatsApp(MENSAGEM_HOME, origem);
+---
+<form class="lead-form" id={id} data-lead-form data-destino={destino} data-fallback={fallback} novalidate>
+  <h3>{titulo}</h3>
+  <div class="field">
+    <label for={`${id}-nome`}>Nome</label>
+    <input id={`${id}-nome`} name="nome" type="text" autocomplete="name" required maxlength="120" />
+  </div>
+  <div class="field">
+    <label for={`${id}-whatsapp`}>WhatsApp</label>
+    <input id={`${id}-whatsapp`} name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="(11) 90000-0000" required maxlength="20" />
+  </div>
+  <div class="field">
+    <label for={`${id}-servico`}>Assunto</label>
+    <select id={`${id}-servico`} name="servico" required>
+      <option value="" disabled selected={!servico}>Escolha uma opção</option>
+      {opcoesServico.map((o) => <option value={o} selected={o === servico}>{o}</option>)}
+      {servico && !opcoesServico.includes(servico) && <option value={servico} selected>{servico}</option>}
+    </select>
+  </div>
+  {mostrarMensagem && (
+    <div class="field">
+      <label for={`${id}-mensagem`}>Conte rapidamente o que aconteceu <span class="hint">(opcional)</span></label>
+      <textarea id={`${id}-mensagem`} name="mensagem" maxlength="1000"></textarea>
+    </div>
+  )}
+  <div class="hp" aria-hidden="true">
+    <label for={`${id}-site`}>Não preencha este campo</label>
+    <input id={`${id}-site`} name="site" type="text" tabindex="-1" autocomplete="off" />
+  </div>
+  <input type="hidden" name="origem" value={origem} />
+  <input type="hidden" name="pagina" value="" />
+  <input type="hidden" name="utm_source" value="" />
+  <input type="hidden" name="utm_medium" value="" />
+  <input type="hidden" name="utm_campaign" value="" />
+  <input type="hidden" name="gclid" value="" />
+  <label class="consent">
+    <input type="checkbox" name="consentimento" required />
+    <span>Autorizo a LM Contabilidade a entrar em contato pelo WhatsApp sobre este pedido. Veja a <a href="/privacidade" class="text-link">política de privacidade</a>.</span>
+  </label>
+  <button type="submit" class="btn btn-dark">{botao}</button>
+  <p class="form-status" role="status" aria-live="polite"></p>
+</form>

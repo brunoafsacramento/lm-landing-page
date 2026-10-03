@@ -1,0 +1,103 @@
+---
+import ServicePage from '../components/ServicePage.astro';
+import { servicoPorSlug } from '../data/servicos';
+import { fiscal, fiscalJson } from '../data/fiscal';
+import { brl } from '../data/precos';
+import { linkWhatsApp } from '../lib/whatsapp';
+
+const s = servicoPorSlug('pf-ou-pj');
+const pct = (v: number) => `${(v * 100).toLocaleString('pt-BR', { maximumFractionDigits: 2 })}%`;
+---
+<ServicePage servico={s}>
+  <section class="section" id="simulador">
+    <div class="narrow">
+      <h2>Simulador PF x PJ</h2>
+      <p style="margin:12px 0 24px;color:var(--muted)">Estimativa mensal para quem presta serviço intelectual (saúde, direito, engenharia, consultoria, tecnologia).</p>
+      <script type="application/json" id="lm-fiscal" set:html={fiscalJson} />
+      <form class="tool" id="pfpj-form" data-whatsapp={linkWhatsApp(s.mensagem, s.origem)}>
+        <div class="field">
+          <label for="pfpj-renda">Quanto você recebe por mês, em média?</label>
+          <input id="pfpj-renda" name="renda" type="text" inputmode="numeric" placeholder="Ex.: 12.000" required />
+        </div>
+        <button type="submit" class="btn btn-dark" style="margin-top:16px">Simular</button>
+
+        <div class="tool-result" id="pfpj-resultado" hidden aria-live="polite">
+          <h3 id="pfpj-titulo"></h3>
+          <div class="compare">
+            <div id="pfpj-pf">
+              <strong>Pessoa física (autônomo)</strong>
+              <dl>
+                <dt>INSS ({pct(fiscal.inss.contribuinteIndividual)})</dt><dd data-v="pf.inss"></dd>
+                <dt>Imposto de Renda</dt><dd data-v="pf.ir"></dd>
+                <dt class="total">Total por mês</dt><dd class="total" data-v="pf.total"></dd>
+                <dt>Sobra para você</dt><dd data-v="pf.liquido"></dd>
+              </dl>
+            </div>
+            <div id="pfpj-pj">
+              <strong>PJ no Simples Nacional</strong>
+              <dl>
+                <dt>DAS (<span data-v="pj.aliquota"></span>)</dt><dd data-v="pj.das"></dd>
+                <dt>INSS do pró-labore</dt><dd data-v="pj.inss"></dd>
+                <dt>IR do pró-labore</dt><dd data-v="pj.ir"></dd>
+                <dt>Contabilidade</dt><dd data-v="pj.honorario"></dd>
+                <dt class="total">Total por mês</dt><dd class="total" data-v="pj.total"></dd>
+                <dt>Sobra para você</dt><dd data-v="pj.liquido"></dd>
+              </dl>
+            </div>
+          </div>
+          <a id="pfpj-whatsapp" class="btn btn-whatsapp" style="margin-top:20px" target="_blank" rel="noopener" href="#">Quero a conta completa para o meu caso</a>
+        </div>
+
+        <p class="tool-note">
+          Estimativa simplificada, com valores vigentes em {fiscal.vigencia}. Considera: como PF, carnê-leão e INSS de {pct(fiscal.inss.contribuinteIndividual)} (serviço prestado a pessoas físicas, sem livro-caixa);
+          como PJ, Simples Nacional no Anexo III pelo fator R, com pró-labore de {pct(fiscal.simples.fatorR)} do faturamento (mínimo de {brl(fiscal.salarioMinimo)}), INSS de {pct(fiscal.inss.socioProLabore)} e honorário do plano ME/EPP Growth ({brl(fiscal.honorarioPj)}).
+          Não inclui ISS fixo de sociedade uniprofissional, despesas dedutíveis nem a tributação de lucros acima de {brl(fiscal.irpf.isencaoLucrosMensal)} por mês. A conta definitiva depende da sua atividade e é feita na conversa.
+        </p>
+      </form>
+    </div>
+  </section>
+</ServicePage>
+
+<script>
+  import { lerFiscal } from '../lib/calculos';
+  import { simularPfPj } from '../lib/calculos';
+
+  const fiscal = lerFiscal();
+
+  const form = document.getElementById('pfpj-form') as HTMLFormElement;
+  const caixa = document.getElementById('pfpj-resultado')!;
+  const moeda = (v: number) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  let usado = false;
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const renda = Number((form.renda.value as string).replace(/\./g, '').replace(',', '.').replace(/[^\d.]/g, ''));
+    if (!renda || renda < 500) { form.renda.focus(); return; }
+    const r = simularPfPj(fiscal, renda);
+    const titulo = document.getElementById('pfpj-titulo')!;
+    caixa.hidden = false;
+
+    if (!r) {
+      titulo.textContent = 'Esse faturamento passa do limite do Simples Nacional. Fale com a gente para avaliar o Lucro Presumido.';
+      caixa.querySelector('.compare')!.setAttribute('hidden', '');
+      return;
+    }
+    caixa.querySelector('.compare')!.removeAttribute('hidden');
+    caixa.querySelectorAll<HTMLElement>('[data-v]').forEach((el) => {
+      const [lado, campo] = el.dataset.v!.split('.') as ['pf' | 'pj', string];
+      const v = (r[lado] as Record<string, number>)[campo];
+      el.textContent = campo === 'aliquota' ? `${(v * 100).toFixed(2).replace('.', ',')}%` : moeda(v);
+    });
+    document.getElementById('pfpj-pf')!.classList.toggle('winner', r.economiaMensal < 0);
+    document.getElementById('pfpj-pj')!.classList.toggle('winner', r.economiaMensal >= 0);
+    titulo.textContent = r.economiaMensal > 0
+      ? `Como PJ, você pagaria cerca de ${moeda(r.economiaMensal)} a menos por mês (${moeda(r.economiaMensal * 12)} por ano).`
+      : `Com essa renda, a pessoa física ainda sai ${moeda(-r.economiaMensal)} mais barata por mês.`;
+
+    const base = form.dataset.whatsapp!;
+    const msg = `Olá! Fiz a simulação PF x PJ no site com renda de ${moeda(renda)} por mês e quero conversar. (site-pfpj)`;
+    (document.getElementById('pfpj-whatsapp') as HTMLAnchorElement).href = base.replace(/\?text=.*/, `?text=${encodeURIComponent(msg)}`);
+
+    if (!usado) { usado = true; window.lmEvento?.('uso_simulador', { ferramenta: 'pf-pj', renda }); }
+  });
+</script>

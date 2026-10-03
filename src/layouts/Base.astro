@@ -1,0 +1,94 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CookieBanner from '../components/CookieBanner.astro';
+import Icon from '../components/Icon.astro';
+import { site, medicao } from '../data/site';
+import { linkWhatsApp, MENSAGEM_HOME } from '../lib/whatsapp';
+
+interface Props {
+  title: string;
+  description: string;
+  mensagem?: string;
+  origem?: string;
+  schema?: Record<string, unknown>[];
+  noindex?: boolean;
+}
+const { title, description, mensagem = MENSAGEM_HOME, origem = 'site-home', schema = [], noindex = false } = Astro.props;
+
+const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '') || '/';
+const canonical = new URL(path === '/' ? '/' : path, site.url).href;
+const whatsapp = linkWhatsApp(mensagem, origem);
+const ogImage = `${site.url}/og-image.png`;
+const temMedicao = Boolean(medicao.ga4 || medicao.googleAds || medicao.metaPixel);
+
+const empresa = {
+  '@context': 'https://schema.org',
+  '@type': 'AccountingService',
+  '@id': `${site.url}/#lm`,
+  name: site.nome,
+  url: `${site.url}/`,
+  logo: `${site.url}/logo.png`,
+  image: ogImage,
+  telephone: '+55-11-98786-7389',
+  email: site.email,
+  priceRange: 'R$ 160 – R$ 1.200',
+  address: {
+    '@type': 'PostalAddress',
+    ...(site.endereco && { streetAddress: site.endereco.rua, postalCode: site.endereco.cep }),
+    addressLocality: site.cidade,
+    addressRegion: site.uf,
+    addressCountry: 'BR',
+  },
+  areaServed: 'BR',
+  founder: { '@type': 'Person', name: site.responsavel },
+  ...([site.instagram, site.perfilGoogle].some(Boolean) && { sameAs: [site.instagram, site.perfilGoogle].filter(Boolean) }),
+};
+---
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow'} />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <meta name="theme-color" content="#fbfaf7" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content={site.nome} />
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="LM Contabilidade, contador em São Paulo" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content={ogImage} />
+  <script type="application/ld+json" set:html={JSON.stringify([empresa, ...schema])} />
+  <script type="application/json" id="lm-config" set:html={JSON.stringify(medicao)} />
+</head>
+<body>
+  <a href="#conteudo" class="skip-link">Pular para o conteúdo</a>
+  <Header path={path} whatsapp={whatsapp} />
+  <main id="conteudo">
+    <slot />
+  </main>
+  <Footer />
+
+  <a href={whatsapp} target="_blank" rel="noopener" class="whatsapp-float" aria-label="Conversar no WhatsApp"><Icon name="whatsapp" size={28} /><span>WhatsApp</span></a>
+  <div class="mobile-bar">
+    <a href={whatsapp} target="_blank" rel="noopener" class="btn btn-whatsapp"><Icon name="whatsapp" /> WhatsApp</a>
+    {site.aceitaLigacao && <a href="tel:+5511987867389" class="btn btn-outline"><Icon name="phone" /> Ligar</a>}
+  </div>
+  {temMedicao && <CookieBanner />}
+
+  <script>
+    import '../scripts/site';
+  </script>
+</body>
+</html>

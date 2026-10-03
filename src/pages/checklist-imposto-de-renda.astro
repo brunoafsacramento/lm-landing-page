@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+import LeadForm from '../components/LeadForm.astro';
+import Icon from '../components/Icon.astro';
+import { checklistIr } from '../data/checklist-ir';
+
+const total = checklistIr.reduce((n, g) => n + g.itens.length, 0);
+---
+<Base
+  title="Checklist de documentos do Imposto de Renda (PDF) | LM Contabilidade"
+  description={`Lista com os ${total} documentos para separar antes de declarar o Imposto de Renda: rendimentos, despesas dedutíveis, bens e dívidas. Baixe grátis em PDF.`}
+  mensagem="Olá! Baixei o checklist do Imposto de Renda e quero ajuda para declarar."
+  origem="site-checklist-ir"
+>
+  <section class="service-hero">
+    <div class="shell service-hero-grid" style="align-items:start">
+      <div>
+        <p class="breadcrumb"><a href="/">Início</a> / <a href="/imposto-de-renda">Imposto de Renda</a> / Checklist</p>
+        <h1>Checklist de documentos do Imposto de Renda</h1>
+        <p class="lead">A lista do que separar antes de declarar, em quatro grupos e {total} itens, para imprimir ou salvar em PDF.</p>
+        <ul class="check-list" style="grid-template-columns:1fr">
+          {checklistIr.map((g) => <li><Icon name="check" size={22} /> {g.grupo} ({g.itens.length} itens)</li>)}
+        </ul>
+      </div>
+      <LeadForm
+        id="checklist"
+        origem="site-checklist-ir"
+        servico="Imposto de Renda"
+        titulo="Receba o checklist"
+        botao="Liberar o checklist"
+        destino="/checklist-imposto-de-renda/lista"
+        mostrarMensagem={false}
+      />
+    </div>
+  </section>
+</Base>

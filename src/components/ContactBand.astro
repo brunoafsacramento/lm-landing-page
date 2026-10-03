@@ -1,0 +1,31 @@
+---
+// Fecho de toda página: WhatsApp + formulário (bloco 8 do modelo de serviço).
+import Icon from './Icon.astro';
+import LeadForm from './LeadForm.astro';
+import { site } from '../data/site';
+
+interface Props { whatsapp: string; origem: string; servico?: string; titulo?: string; texto?: string }
+const {
+  whatsapp,
+  origem,
+  servico,
+  titulo = 'Mande uma mensagem e receba o orçamento.',
+  texto = 'Conte o que você precisa pelo WhatsApp. Se preferir, deixe seu contato no formulário e a gente chama você.',
+} = Astro.props;
+---
+<section class="contact-band" id="contato">
+  <div class="shell contact-grid">
+    <div>
+      <h2>{titulo}</h2>
+      <p class="lead">{texto}</p>
+      <a href={whatsapp} target="_blank" rel="noopener" class="btn btn-whatsapp"><Icon name="whatsapp" /> Conversar no WhatsApp</a>
+      {site.respostaWhatsApp && <p class="response-note" style="color:#d0d8d3">{site.respostaWhatsApp}</p>}
+      <div class="contact-info">
+        <span>{site.telefoneExibicao} · <a href={`mailto:${site.email}`}>{site.email}</a></span>
+        {site.endereco && <span>{site.endereco.rua}, {site.endereco.bairro}, {site.cidade} – {site.uf}, {site.endereco.cep}</span>}
+        {site.horario && <span>{site.horario}</span>}
+      </div>
+    </div>
+    <LeadForm origem={origem} servico={servico} />
+  </div>
+</section>
