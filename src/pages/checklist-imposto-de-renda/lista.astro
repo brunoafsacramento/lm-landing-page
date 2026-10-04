@@ -7,6 +7,7 @@ import { linkWhatsApp } from '../../lib/whatsapp';
 
 const mensagem = 'Olá! Baixei o checklist do Imposto de Renda e quero ajuda para declarar.';
 const whatsapp = linkWhatsApp(mensagem, 'site-checklist-ir');
+const total = checklistIr.reduce((n, g) => n + g.itens.length, 0);
 ---
 <Base title="Checklist de documentos do Imposto de Renda | LM Contabilidade" description="Lista de documentos para declarar o Imposto de Renda." mensagem={mensagem} origem="site-checklist-ir" noindex>
   <section class="section">
@@ -16,19 +17,19 @@ const whatsapp = linkWhatsApp(mensagem, 'site-checklist-ir');
         <button type="button" class="btn btn-dark" id="salvar-pdf">Salvar em PDF ou imprimir</button>
       </div>
       <img src="/logo.png" alt="LM Contabilidade" width="96" height="54" style="margin-bottom:12px" />
-      <h1 style="font-size:38px">Checklist de documentos do Imposto de Renda</h1>
-      <p style="margin:12px 0 8px;color:var(--muted)">Separe o que se aplica a você. Na dúvida, mande assim mesmo: a gente confere.</p>
+      <h1>Checklist de documentos do Imposto de Renda</h1>
+      <p style="margin:12px 0 8px;color:var(--muted)">{total} itens em {checklistIr.length} grupos. Marque o que se aplica a você. Na dúvida, mande assim mesmo: a gente confere.</p>
 
       {checklistIr.map((g) => (
-        <div style="margin-top:32px">
-          <h2 style="font-size:24px;margin-bottom:12px">{g.grupo}</h2>
-          <ul style="list-style:none;padding:0;margin:0">
-            {g.itens.map((i) => <li style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)"><span aria-hidden="true" style="flex:none;width:18px;height:18px;margin-top:4px;border:1.5px solid var(--ink);border-radius:3px"></span>{i}</li>)}
+        <div class="checklist-group">
+          <h2>{g.grupo}</h2>
+          <ul>
+            {g.itens.map((i) => <li><span class="box" aria-hidden="true"></span>{i}</li>)}
           </ul>
         </div>
       ))}
 
-      <p style="margin-top:36px;font-weight:600">{site.nome} · {site.crc} · WhatsApp {site.telefoneExibicao} · www.lmcontab.com.br</p>
+      <p style="margin-top:36px;font-weight:600">{site.nome} · {site.crc} · WhatsApp {site.telefoneExibicao} · {site.url.replace(/^https?:\/\//, '')}</p>
       <div class="no-print" style="margin-top:28px">
         <a href={whatsapp} target="_blank" rel="noopener" class="btn btn-whatsapp"><Icon name="whatsapp" /> Mandar os documentos pelo WhatsApp</a>
       </div>

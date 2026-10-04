@@ -23,10 +23,35 @@ const gravar = (store: Storage, chave: string, valor: string) => { try { store.s
 // ---------- Menu do celular ----------
 const menuBotao = document.getElementById('menu-toggle');
 const menu = document.getElementById('mobile-menu');
-menuBotao?.addEventListener('click', () => {
-  const aberto = menu?.classList.toggle('open') ?? false;
+function alternarMenu(abrir?: boolean) {
+  if (!menu || !menuBotao) return;
+  const aberto = menu.classList.toggle('open', abrir);
   menuBotao.setAttribute('aria-expanded', String(aberto));
   menuBotao.setAttribute('aria-label', aberto ? 'Fechar menu' : 'Abrir menu');
+}
+menuBotao?.addEventListener('click', () => alternarMenu());
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && menu?.classList.contains('open')) { alternarMenu(false); menuBotao?.focus(); }
+});
+
+// ---------- Máscaras ----------
+// Telefone: (11) 98786-7389 ou (11) 3456-7890, só dígitos nacionais.
+function formatarTelefone(digitos: string) {
+  const d = digitos.replace(/\D/g, '').replace(/^55(?=\d{10,11}$)/, '').slice(0, 11);
+  if (d.length <= 2) return d;
+  if (d.length <= 6) return `(${d.slice(0, 2)}) ${d.slice(2)}`;
+  if (d.length <= 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
+  return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
+}
+document.querySelectorAll<HTMLInputElement>('[data-telefone]').forEach((campo) => {
+  campo.addEventListener('input', () => { campo.value = formatarTelefone(campo.value); });
+});
+// Dinheiro: só inteiros, com separador de milhar enquanto digita (75000 → 75.000).
+document.querySelectorAll<HTMLInputElement>('[data-moeda]').forEach((campo) => {
+  campo.addEventListener('input', () => {
+    const d = campo.value.replace(/\D/g, '').replace(/^0+(?=\d)/, '').slice(0, 10);
+    campo.value = d ? Number(d).toLocaleString('pt-BR') : '';
+  });
 });
 
 // ---------- Medição (só depois do aceite) ----------
@@ -118,20 +143,45 @@ document.querySelectorAll<HTMLFormElement>('[data-lead-form]').forEach((form) =>
   (form.elements.namedItem('pagina') as HTMLInputElement).value = location.pathname;
   for (const c of campos) (form.elements.namedItem(c) as HTMLInputElement).value = utm[c] || '';
 
+  // Erro inline por campo: mensagem abaixo do campo, aria-invalid e foco no primeiro com problema.
+  const mostrarErro = (nome: string, msg: string) => {
+    const campo = form.elements.namedItem(nome) as HTMLElement | null;
+    const alvo = form.querySelector<HTMLElement>(`[data-erro="${nome}"]`);
+    if (alvo) alvo.textContent = msg;
+    if (campo) { if (msg) campo.setAttribute('aria-invalid', 'true'); else campo.removeAttribute('aria-invalid'); }
+  };
+  const validar = (dados: Record<string, string>) => {
+    const digitos = (dados.whatsapp || '').replace(/\D/g, '');
+    const erros: Record<string, string> = {
+      nome: !dados.nome?.trim() ? 'Escreva o seu nome.' : '',
+      whatsapp: !digitos ? 'Informe o número do WhatsApp com DDD.' : digitos.length < 10 || digitos.length > 11 ? 'O número precisa ter DDD e 8 ou 9 dígitos, ex.: (11) 90000-0000.' : '',
+      servico: !dados.servico ? 'Escolha o assunto da conversa.' : '',
+      consentimento: !dados.consentimento ? 'Para enviar, autorize o contato pelo WhatsApp.' : '',
+    };
+    for (const [nome, msg] of Object.entries(erros)) mostrarErro(nome, msg);
+    return Object.keys(erros).find((n) => erros[n]) ?? null;
+  };
+  // Ao corrigir o campo, o erro some na hora.
+  for (const nome of ['nome', 'whatsapp', 'servico', 'consentimento']) {
+    (form.elements.namedItem(nome) as HTMLElement | null)?.addEventListener('input', () => mostrarErro(nome, ''));
+  }
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     status.className = 'form-status';
+    status.textContent = '';
     const dados = Object.fromEntries(new FormData(form)) as Record<string, string>;
-    const digitos = (dados.whatsapp || '').replace(/\D/g, '');
 
-    const erro = !dados.nome?.trim() ? 'Informe seu nome.'
-      : digitos.length < 10 || digitos.length > 13 ? 'Informe um WhatsApp com DDD.'
-      : !dados.servico ? 'Escolha o assunto.'
-      : !dados.consentimento ? 'Marque a autorização de contato para enviar.'
-      : '';
-    if (erro) { status.textContent = erro; status.classList.add('erro'); return; }
+    const primeiroErro = validar(dados);
+    if (primeiroErro) {
+      (form.elements.namedItem(primeiroErro) as HTMLElement | null)?.focus();
+      status.textContent = 'Confira os campos destacados.';
+      status.classList.add('erro');
+      return;
+    }
 
     botao.disabled = true;
+    botao.setAttribute('aria-busy', 'true');
     status.textContent = 'Enviando…';
     try {
       const r = await fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...dados, consentimento: true }) });
@@ -140,6 +190,7 @@ document.querySelectorAll<HTMLFormElement>('[data-lead-form]').forEach((form) =>
       location.href = form.dataset.destino || '/obrigado';
     } catch {
       botao.disabled = false;
+      botao.removeAttribute('aria-busy');
       status.classList.add('erro');
       status.innerHTML = `Não conseguimos enviar agora. <a class="text-link" target="_blank" rel="noopener" href="${form.dataset.fallback}">Fale direto pelo WhatsApp</a>.`;
     }

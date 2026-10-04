@@ -17,13 +17,13 @@ const whatsapp = linkWhatsApp(mensagem, 'site-sobre');
 >
   <section class="service-hero">
     <div class="shell">
-      <p class="breadcrumb"><a href="/">Início</a> / Sobre</p>
+      <nav class="breadcrumb" aria-label="Você está em"><a href="/">Início</a> / <span aria-current="page">Sobre</span></nav>
       <div class="person" style={site.fotoResponsavel ? '' : 'grid-template-columns:1fr'}>
         {site.fotoResponsavel && <img src={site.fotoResponsavel} alt={`${site.responsavel}, contador da LM Contabilidade`} width="220" height="220" />}
         <div>
           <h1>{site.responsavel}</h1>
           <p class="person-role">Contador responsável · {site.crc}</p>
-          <p class="lead" style="margin:0">{site.bioResponsavel ?? 'A LM Contabilidade cuida da contabilidade de empresas, MEIs e profissionais liberais e resolve as pendências de pessoas físicas, do Imposto de Renda à regularização de imóveis.'}</p>
+          <p class="lead" style="margin:0;color:var(--muted);font-size:19px">{site.bioResponsavel ?? 'A LM Contabilidade cuida da contabilidade de empresas, MEIs e profissionais liberais e resolve as pendências de pessoas físicas, do Imposto de Renda à regularização de imóveis.'}</p>
         </div>
       </div>
     </div>
@@ -31,7 +31,7 @@ const whatsapp = linkWhatsApp(mensagem, 'site-sobre');
 
   <section class="section">
     <div class="shell">
-      <h2 style="margin-bottom:28px">Como a LM trabalha</h2>
+      <h2>Como a LM trabalha</h2>
       <ul class="check-list">
         <li><Icon name="check" size={22} /> Preço informado e orçamento fechado antes de começar.</li>
         <li><Icon name="check" size={22} /> Atendimento pelo WhatsApp, por e-mail e pelo portal do cliente.</li>

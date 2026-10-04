@@ -1,6 +1,7 @@
 ---
-// Formulário curto (seção 6.1): nome, WhatsApp, serviço e mensagem opcional.
+// Formulário curto (seção 6.1): nome, WhatsApp, assunto e mensagem opcional.
 // Envia para /api/lead; os campos ocultos levam página de origem, UTMs e gclid.
+// A validação inline e a máscara do telefone ficam em scripts/site.ts.
 import { opcoesServico } from '../data/servicos';
 import { linkWhatsApp, MENSAGEM_HOME } from '../lib/whatsapp';
 
@@ -28,19 +29,22 @@ const fallback = linkWhatsApp(MENSAGEM_HOME, origem);
   <h3>{titulo}</h3>
   <div class="field">
     <label for={`${id}-nome`}>Nome</label>
-    <input id={`${id}-nome`} name="nome" type="text" autocomplete="name" required maxlength="120" />
+    <input id={`${id}-nome`} name="nome" type="text" autocomplete="name" required maxlength="120" aria-describedby={`${id}-nome-erro`} />
+    <p class="field-error" id={`${id}-nome-erro`} data-erro="nome"></p>
   </div>
   <div class="field">
-    <label for={`${id}-whatsapp`}>WhatsApp</label>
-    <input id={`${id}-whatsapp`} name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="(11) 90000-0000" required maxlength="20" />
+    <label for={`${id}-whatsapp`}>WhatsApp <span class="hint">(com DDD)</span></label>
+    <input id={`${id}-whatsapp`} name="whatsapp" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="(11) 90000-0000" required maxlength="16" data-telefone aria-describedby={`${id}-whatsapp-erro`} />
+    <p class="field-error" id={`${id}-whatsapp-erro`} data-erro="whatsapp"></p>
   </div>
   <div class="field">
     <label for={`${id}-servico`}>Assunto</label>
-    <select id={`${id}-servico`} name="servico" required>
+    <select id={`${id}-servico`} name="servico" required aria-describedby={`${id}-servico-erro`}>
       <option value="" disabled selected={!servico}>Escolha uma opção</option>
       {opcoesServico.map((o) => <option value={o} selected={o === servico}>{o}</option>)}
       {servico && !opcoesServico.includes(servico) && <option value={servico} selected>{servico}</option>}
     </select>
+    <p class="field-error" id={`${id}-servico-erro`} data-erro="servico"></p>
   </div>
   {mostrarMensagem && (
     <div class="field">
@@ -58,10 +62,13 @@ const fallback = linkWhatsApp(MENSAGEM_HOME, origem);
   <input type="hidden" name="utm_medium" value="" />
   <input type="hidden" name="utm_campaign" value="" />
   <input type="hidden" name="gclid" value="" />
-  <label class="consent">
-    <input type="checkbox" name="consentimento" required />
-    <span>Autorizo a LM Contabilidade a entrar em contato pelo WhatsApp sobre este pedido. Veja a <a href="/privacidade" class="text-link">política de privacidade</a>.</span>
-  </label>
+  <div class="field">
+    <label class="consent">
+      <input type="checkbox" name="consentimento" required aria-describedby={`${id}-consentimento-erro`} />
+      <span>Autorizo a LM Contabilidade a entrar em contato pelo WhatsApp sobre este pedido. Veja a <a href="/privacidade" class="text-link">política de privacidade</a>.</span>
+    </label>
+    <p class="field-error" id={`${id}-consentimento-erro`} data-erro="consentimento"></p>
+  </div>
   <button type="submit" class="btn btn-dark">{botao}</button>
   <p class="form-status" role="status" aria-live="polite"></p>
 </form>

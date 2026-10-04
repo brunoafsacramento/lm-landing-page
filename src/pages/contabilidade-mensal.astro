@@ -11,6 +11,7 @@ const mensagem = 'Olá! Quero conhecer os planos de contabilidade mensal.';
 const origem = 'site-mensal';
 const whatsapp = linkWhatsApp(mensagem, origem);
 const visiveis = planos.filter((p) => p.exibir);
+const menorMensal = visiveis.length ? Math.min(...visiveis.map((p) => p.preco)) : null;
 const ano = new Date().getFullYear();
 
 const perguntas = [
@@ -37,24 +38,37 @@ const schema = [{
 ---
 <Base
   title="Contabilidade mensal para MEI, ME e EPP: planos e preços | LM Contabilidade"
-  description={`Planos de contabilidade mensal a partir de ${brl(Math.min(...visiveis.map((p) => p.preco)))} por mês, para pessoa física, MEI, ME e EPP. Troque de contador sem complicação.`}
+  description={`Planos de contabilidade mensal${menorMensal !== null ? ` a partir de ${brl(menorMensal)} por mês` : ''}, para pessoa física, MEI, ME e EPP. Troque de contador sem complicação.`}
   mensagem={mensagem}
   origem={origem}
   schema={schema}
 >
   <section class="service-hero">
     <div class="shell">
-      <p class="breadcrumb"><a href="/">Início</a> / Contabilidade mensal</p>
-      <h1>Quer trocar de contador? Veja os planos e o preço de cada um.</h1>
-      <p class="lead">Mensalidade fixa, adicionais claros e atendimento pelo WhatsApp e pelo portal do cliente.</p>
-      <div class="btn-row">
-        <a href={whatsapp} target="_blank" rel="noopener" class="btn btn-whatsapp"><Icon name="whatsapp" /> Conversar no WhatsApp</a>
-        <a href="#contato" class="btn btn-outline">Prefiro ser chamado</a>
+      <nav class="breadcrumb" aria-label="Você está em"><a href="/">Início</a> / <span aria-current="page">Contabilidade mensal</span></nav>
+      <div class="service-hero-grid">
+        <div>
+          <h1>Quer trocar de contador ou começou a empresa agora?</h1>
+          <p class="lead">Mensalidade fixa, adicionais claros e atendimento pelo WhatsApp e pelo portal do cliente. Veja os planos e o preço de cada um.</p>
+          <div class="btn-row">
+            <a href={whatsapp} target="_blank" rel="noopener" class="btn btn-whatsapp"><Icon name="whatsapp" /> Conversar no WhatsApp</a>
+            <a href="#contato" class="btn btn-outline">Prefiro ser chamado</a>
+          </div>
+          {site.respostaWhatsApp && <p class="response-note">{site.respostaWhatsApp}</p>}
+        </div>
+        {menorMensal !== null && (
+          <div class="price-box">
+            <small>Planos a partir de</small>
+            <strong>{brl(menorMensal)} <span class="sufixo">/mês</span></strong>
+            <p>{visiveis.length} planos, para pessoa física, MEI, ME e EPP.</p>
+            <a href="#planos">Comparar os planos</a>
+          </div>
+        )}
       </div>
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" id="planos">
     <div class="shell">
       <div class="section-head"><div><h2>Planos {ano}</h2><p>Valores mensais. Os adicionais só entram quando o volume passa do que o plano inclui.</p></div></div>
       <div class="plan-grid">
@@ -74,7 +88,7 @@ const schema = [{
   <section class="section section-alt">
     <div class="shell two-col">
       <div>
-        <h2 style="margin-bottom:28px">Como é a troca</h2>
+        <h2>Como é a troca</h2>
         <ol class="steps">
           <li>Você conta pelo WhatsApp o tipo de empresa, o faturamento e quantas pessoas trabalham nela.</li>
           <li>Indicamos o plano e enviamos a proposta com o valor fechado.</li>
@@ -82,7 +96,7 @@ const schema = [{
         </ol>
       </div>
       <div>
-        <h2 style="margin-bottom:24px">Perguntas frequentes</h2>
+        <h2>Perguntas frequentes</h2>
         <Faq perguntas={perguntas} />
       </div>
     </div>

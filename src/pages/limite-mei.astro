@@ -23,16 +23,17 @@ const perguntas = servicoPorSlug('mei').perguntas.slice(0, 4);
 >
   <section class="service-hero">
     <div class="narrow">
-      <p class="breadcrumb"><a href="/">Início</a> / <a href="/mei">MEI</a> / Limite</p>
+      <nav class="breadcrumb" aria-label="Você está em"><a href="/">Início</a> / <a href="/mei">MEI</a> / <span aria-current="page">Limite</span></nav>
       <h1>Passei do limite do MEI?</h1>
       <p class="lead">Digite quanto o MEI faturou neste ano e veja se passou do limite, quanto passou e o que fazer agora.</p>
 
       <script type="application/json" id="lm-fiscal" set:html={fiscalJson} />
-      <form class="tool" id="mei-form" data-whatsapp={whatsapp}>
+      <form class="tool" id="mei-form" data-whatsapp={whatsapp} novalidate>
         <div class="tool-row">
           <div class="field">
             <label for="mei-fat">Faturamento de {ano} até agora</label>
-            <input id="mei-fat" name="faturamento" type="text" inputmode="numeric" placeholder="Ex.: 75.000" required />
+            <div class="money"><span aria-hidden="true">R$</span><input id="mei-fat" name="faturamento" type="text" inputmode="numeric" placeholder="75.000" required data-moeda aria-describedby="mei-fat-erro" /></div>
+            <p class="field-error" id="mei-fat-erro"></p>
           </div>
           <div class="field">
             <label for="mei-abertura">Quando o MEI foi aberto?</label>
@@ -42,13 +43,13 @@ const perguntas = servicoPorSlug('mei').perguntas.slice(0, 4);
             </select>
           </div>
         </div>
-        <button type="submit" class="btn btn-dark" style="margin-top:16px">Calcular</button>
+        <button type="submit" class="btn btn-dark">Calcular</button>
 
         <div class="tool-result" id="mei-resultado" hidden aria-live="polite">
           <h3 id="mei-titulo"></h3>
           <p class="big" id="mei-valor"></p>
           <p id="mei-texto"></p>
-          <a id="mei-whatsapp" class="btn btn-whatsapp" style="margin-top:18px" target="_blank" rel="noopener" href={whatsapp}><Icon name="whatsapp" /> Falar com um contador</a>
+          <a id="mei-whatsapp" class="btn btn-whatsapp" target="_blank" rel="noopener" href={whatsapp}><Icon name="whatsapp" /> Falar com um contador</a>
         </div>
         <p class="tool-note">Valores vigentes em {fiscal.vigencia}: limite anual de {brl(fiscal.mei.limiteAnual)}, ou {brl(fiscal.mei.limiteMensalProporcional)} por mês no ano de abertura. Não vale para o MEI Caminhoneiro, que tem limite próprio.</p>
       </form>
@@ -57,7 +58,7 @@ const perguntas = servicoPorSlug('mei').perguntas.slice(0, 4);
 
   <section class="section">
     <div class="narrow">
-      <h2 style="margin-bottom:24px">Perguntas frequentes</h2>
+      <h2>Perguntas frequentes</h2>
       <Faq perguntas={perguntas} />
       <p style="margin-top:24px"><a href="/mei" class="text-link">Ver tudo sobre MEI: abertura, desenquadramento e baixa</a></p>
     </div>
@@ -67,27 +68,35 @@ const perguntas = servicoPorSlug('mei').perguntas.slice(0, 4);
 </Base>
 
 <script>
-  import { lerFiscal } from '../lib/calculos';
-  import { avaliarLimiteMei } from '../lib/calculos';
+  import { lerFiscal, avaliarLimiteMei } from '../lib/calculos';
 
   const fiscal = lerFiscal();
   const tol = `${Math.round(fiscal.mei.tolerancia * 100)}%`;
 
   const form = document.getElementById('mei-form') as HTMLFormElement;
+  const campo = form.elements.namedItem('faturamento') as HTMLInputElement;
+  const erro = document.getElementById('mei-fat-erro')!;
   const moeda = (v: number) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
   let usado = false;
 
+  campo.addEventListener('input', () => { erro.textContent = ''; campo.removeAttribute('aria-invalid'); });
+
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    const faturamento = Number((form.faturamento.value as string).replace(/\./g, '').replace(',', '.').replace(/[^\d.]/g, ''));
-    if (!faturamento && faturamento !== 0) { form.faturamento.focus(); return; }
-    const mes = Number(form.abertura.value) || null;
+    const faturamento = Number(campo.value.replace(/\D/g, ''));
+    if (!campo.value.trim()) {
+      erro.textContent = 'Digite o faturamento do ano, mesmo que aproximado.';
+      campo.setAttribute('aria-invalid', 'true');
+      campo.focus();
+      return;
+    }
+    const mes = Number((form.elements.namedItem('abertura') as HTMLSelectElement).value) || null;
     const r = avaliarLimiteMei(fiscal, faturamento, mes);
 
     const titulo = document.getElementById('mei-titulo')!;
     const valor = document.getElementById('mei-valor')!;
     const texto = document.getElementById('mei-texto')!;
-    const limiteTxt = mes ? `${moeda(r.limite)} (proporcional a ${r.meses} meses)` : moeda(r.limite);
+    const limiteTxt = mes ? `${moeda(r.limite)} (proporcional a ${r.meses} ${r.meses === 1 ? 'mês' : 'meses'})` : moeda(r.limite);
 
     if (r.situacao === 'dentro') {
       titulo.textContent = 'Você está dentro do limite.';

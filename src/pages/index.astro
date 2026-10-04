@@ -10,28 +10,40 @@ import { linkWhatsApp, MENSAGEM_HOME } from '../lib/whatsapp';
 
 const whatsapp = linkWhatsApp(MENSAGEM_HOME, 'site-home');
 // Itens ocultos no portal somem daqui (avulsos[código] fica indefinido).
-const menorMensal = Math.min(...planos.filter((p) => p.exibir).map((p) => p.preco));
+const planosVisiveis = planos.filter((p) => p.exibir);
+const menorMensal = planosVisiveis.length ? Math.min(...planosVisiveis.map((p) => p.preco)) : null;
 const precosDe = (codigos: string[]) => codigos.map((c) => avulsos[c]?.preco).filter((v): v is number => v !== undefined);
 const aPartirDe = (codigos: string[]) => (precosDe(codigos).length ? brl(Math.min(...precosDe(codigos))) : null);
+const menorAvulso = Math.min(...Object.values(avulsos).map((a) => a.preco), ...(menorMensal !== null ? [menorMensal] : []));
 
+// Atalhos nas palavras de quem procura (regra do Lucas: o título descreve o problema, não o serviço).
 const atalhos = [
-  { href: '/imposto-de-renda', label: 'Meu IR' },
-  { href: '/mei', label: 'Meu MEI' },
-  { href: '/abrir-empresa', label: 'Abrir empresa' },
-  { href: '/contabilidade-mensal', label: 'Trocar de contador' },
+  { href: '/imposto-de-renda', label: 'Não declarei o IR ou caí na malha' },
+  { href: '/limite-mei', label: 'Passei do limite do MEI' },
+  { href: '/mei-divida-ativa', label: 'Meu MEI tem dívida' },
+  { href: '/abrir-empresa', label: 'Quero abrir empresa' },
+  { href: '/contabilidade-mensal', label: 'Quero trocar de contador' },
+  { href: '/imovel-e-doacao', label: 'Vou doar, herdar ou vender imóvel' },
 ];
 
+// Cartão de preços do topo (fica no lugar da foto enquanto ela não chega).
 const resumo = [
-  { nome: 'Imposto de Renda', preco: aPartirDe(['IR']) },
-  { nome: 'MEI: abertura ou baixa', preco: aPartirDe(['MEI']) },
-  { nome: 'Abertura de empresa', preco: aPartirDe(['ABR']) },
-  { nome: 'Contabilidade mensal', preco: Number.isFinite(menorMensal) ? `${brl(menorMensal)}/mês` : null },
+  { href: '/imposto-de-renda', nome: 'Imposto de Renda', preco: aPartirDe(['IR']) },
+  { href: '/mei', nome: 'MEI: abertura ou baixa', preco: aPartirDe(['MEI', 'MEIR']) },
+  { href: '/abrir-empresa', nome: 'Abertura de empresa', preco: aPartirDe(['ABR']) },
+  { href: '/imovel-e-doacao', nome: 'Doação, herança e imóvel', preco: aPartirDe(['ITC', 'RGI']) },
+  { href: '/contabilidade-mensal', nome: 'Contabilidade mensal', preco: menorMensal !== null ? `${brl(menorMensal)}/mês` : null },
 ].filter((r) => r.preco);
 
-const cartoes = [
-  ...servicos.map((s) => ({ href: `/${s.slug}`, nome: s.menu, texto: s.subtitulo, preco: aPartirDe(s.precos), sufixo: '' })),
-  { href: '/contabilidade-mensal', nome: 'Contabilidade mensal', texto: 'Planos para PF, MEI, ME e EPP, com o que está incluído e os adicionais na tabela.', preco: Number.isFinite(menorMensal) ? brl(menorMensal) : null, sufixo: '/mês' },
+const cartoes = servicos.map((s) => ({ href: `/${s.slug}`, nome: s.menu, texto: s.subtitulo, preco: aPartirDe(s.precos) }));
+
+// Barra de confiança: números só quando cadastrados; o que fica fixo é verdadeiro hoje.
+const numeros = [
+  ...site.provas,
+  ...(site.anoInicio ? [{ valor: `${new Date().getFullYear() - site.anoInicio} anos`, rotulo: 'de atuação' }] : []),
+  { valor: site.crc, rotulo: 'registro ativo no Conselho Regional de Contabilidade' },
 ];
+const compromissos = ['Preço fechado antes de começar', 'Atendimento pelo WhatsApp e portal do cliente', 'Clientes em todo o Brasil'];
 
 const perguntas = [
   servicoPorSlug('imposto-de-renda').perguntas[0],
@@ -49,36 +61,42 @@ const faqSchema = {
 };
 ---
 <Base
-  title="Contador em São Paulo para empresas, MEIs e pessoas físicas | LM Contabilidade"
-  description={`Imposto de Renda, MEI, abertura de empresa e contabilidade mensal em São Paulo, com preço a partir de ${brl(Number.isFinite(menorMensal) ? menorMensal : 160)}. Fale com a LM Contabilidade pelo WhatsApp.`}
+  title="Contador em São Paulo para Imposto de Renda, MEI e empresas | LM Contabilidade"
+  description={`Imposto de Renda, MEI, abertura de empresa e contabilidade mensal em São Paulo, com preço a partir de ${brl(Number.isFinite(menorAvulso) ? menorAvulso : 160)}. Fale com a LM Contabilidade pelo WhatsApp.`}
   schema={[faqSchema]}
 >
   <section class="hero">
     <div class="shell">
       <div class="hero-grid">
         <div>
-          <h1>Contador em São Paulo para empresas, MEIs, EPPs e pessoas físicas</h1>
-          <p class="hero-lead">Imposto de Renda, MEI, abertura de empresa e contabilidade mensal. Você sabe o preço antes de começar e resolve tudo pelo WhatsApp.</p>
+          <h1>Contador em São Paulo para o seu Imposto de Renda, MEI e empresa</h1>
+          <p class="hero-lead">
+            Declaração, regularização, abertura de empresa e contabilidade mensal{Number.isFinite(menorAvulso) && <>, a partir de {brl(menorAvulso)}</>}.
+            Você sabe o preço antes de começar e resolve tudo pelo WhatsApp.
+          </p>
           <div class="btn-row">
             <a href={whatsapp} target="_blank" rel="noopener" class="btn btn-whatsapp"><Icon name="whatsapp" /> Conversar no WhatsApp</a>
-            <a href="#contato" class="text-link">Prefiro ser chamado</a>
+            <a href="#contato" class="btn btn-outline">Prefiro ser chamado</a>
           </div>
           {site.respostaWhatsApp && <p class="response-note">{site.respostaWhatsApp}</p>}
         </div>
         {site.fotoResponsavel ? (
           <figure class="hero-photo" style="margin:0"><img src={site.fotoResponsavel} alt={`${site.responsavel}, contador da LM Contabilidade`} width="480" height="600" /></figure>
         ) : (
-          <aside class="hero-card" aria-label="Preços de referência">
-            <dl>
-              {resumo.map((r) => <div><dt>{r.nome}</dt><dd><small>a partir de</small>{r.preco}</dd></div>)}
-            </dl>
-            <p class="card-note">Orçamento fechado antes de começar.</p>
-          </aside>
+          resumo.length > 0 && (
+            <aside class="hero-card" aria-labelledby="precos-titulo">
+              <h2 id="precos-titulo">Preços de referência</h2>
+              <ul>
+                {resumo.map((r) => <li><a href={r.href}>{r.nome} <span class="valor"><small>a partir de</small>{r.preco}</span></a></li>)}
+              </ul>
+              <p class="card-note">Orçamento fechado antes de começar. <a href="#servicos" class="text-link">Ver todos os serviços</a></p>
+            </aside>
+          )
         )}
       </div>
 
       <nav class="quick-links" aria-labelledby="atalhos-titulo">
-        <h2 id="atalhos-titulo">Do que você precisa hoje?</h2>
+        <h2 id="atalhos-titulo">O que aconteceu com você?</h2>
         <div class="quick-grid">
           {atalhos.map((a) => <a href={a.href}>{a.label} <Icon name="arrow" size={18} /></a>)}
         </div>
@@ -86,12 +104,10 @@ const faqSchema = {
     </div>
   </section>
 
-  <section class="proof-bar" aria-label="Credenciais">
+  <section class="proof-bar" aria-label="Credenciais e compromissos">
     <div class="shell proof-inner">
-      {site.provas.map((p) => <span><strong>{p.valor}</strong>{p.rotulo}</span>)}
-      {site.anoInicio && <span><strong>{new Date().getFullYear() - site.anoInicio} anos</strong>de atuação</span>}
-      <span><strong>{site.crc}</strong>registro no Conselho Regional de Contabilidade</span>
-      <span><strong>Brasil</strong>atendimento em todos os estados</span>
+      {numeros.map((n) => <span><strong>{n.valor}</strong>{n.rotulo}</span>)}
+      {compromissos.map((c) => <span><Icon name="check" size={20} />{c}</span>)}
     </div>
   </section>
 
@@ -105,10 +121,23 @@ const faqSchema = {
           <a class="service-card" href={c.href}>
             <h3>{c.nome}</h3>
             <p>{c.texto}</p>
-            {c.preco && <div class="price"><small>a partir de</small><strong>{c.preco}</strong>{c.sufixo && <span style="color:var(--muted);font:500 15px var(--body)">{c.sufixo}</span>}</div>}
+            {c.preco && <div class="price"><small>a partir de</small><strong>{c.preco}</strong></div>}
             <span class="more">Ver detalhes →</span>
           </a>
         ))}
+        {planosVisiveis.length > 0 && (
+          <a class="service-card wide" href="/contabilidade-mensal">
+            <div>
+              <h3>Contabilidade mensal</h3>
+              <p>Quer trocar de contador ou começou a empresa agora? Mensalidade fixa, com o que está incluído e os adicionais na tabela.</p>
+              {menorMensal !== null && <div class="price"><small>planos a partir de</small><strong>{brl(menorMensal)}</strong> <span class="sufixo">/mês</span></div>}
+              <span class="more">Ver os planos →</span>
+            </div>
+            <ul class="planos">
+              {planosVisiveis.map((p) => <li><strong>{p.nome}</strong>{p.para}<span>{brl(p.preco)}/mês</span></li>)}
+            </ul>
+          </a>
+        )}
       </div>
     </div>
   </section>
@@ -119,7 +148,7 @@ const faqSchema = {
       <div>
         <h2>Quem atende</h2>
         <p class="person-role">{site.responsavel} · contador · {site.crc}</p>
-        <p style="max-width:640px;color:var(--ink-soft)">{site.bioResponsavel ?? 'A LM Contabilidade atende empresas, MEIs, profissionais liberais e pessoas físicas de todo o Brasil, com atendimento pelo WhatsApp e um portal onde cada cliente acompanha documentos, solicitações e serviços.'}</p>
+        <p class="person-text">{site.bioResponsavel ?? 'A LM Contabilidade atende empresas, MEIs, profissionais liberais e pessoas físicas de todo o Brasil, com atendimento pelo WhatsApp e um portal onde cada cliente acompanha documentos, solicitações e serviços.'}</p>
         <p style="margin-top:16px"><a href="/sobre" class="text-link">Conheça a LM</a></p>
       </div>
     </div>
@@ -128,7 +157,7 @@ const faqSchema = {
   {site.depoimentos.length > 0 && (
     <section class="section">
       <div class="shell">
-        <h2 style="margin-bottom:28px">O que dizem os clientes</h2>
+        <h2>O que dizem os clientes</h2>
         <div class="quotes">
           {site.depoimentos.slice(0, 5).map((d) => <figure><blockquote>“{d.texto}”</blockquote><figcaption>{d.nome}</figcaption></figure>)}
         </div>
@@ -139,13 +168,13 @@ const faqSchema = {
   <section class="section">
     <div class="shell two-col">
       <div>
-        <h2>Ferramentas gratuitas</h2>
-        <p style="margin:12px 0 24px;color:var(--muted)">Respostas rápidas para as dúvidas que mais chegam no WhatsApp.</p>
+        <h2 style="margin-bottom:12px">Ferramentas grátis</h2>
+        <p style="margin-bottom:24px;color:var(--muted)">Respostas rápidas para as dúvidas que mais chegam no WhatsApp.</p>
         <div class="price-table">
-          <a class="price-row" href="/limite-mei" style="text-decoration:none"><h3>Passei do limite do MEI?</h3><p>Digite o faturamento do ano e veja o que fazer.</p></a>
-          <a class="price-row" href="/pf-ou-pj#simulador" style="text-decoration:none"><h3>Simulador PF x PJ</h3><p>Compare os impostos como pessoa física e como empresa.</p></a>
-          <a class="price-row" href="/checklist-imposto-de-renda" style="text-decoration:none"><h3>Checklist do Imposto de Renda</h3><p>A lista de documentos para separar antes de declarar.</p></a>
-          <a class="price-row" href="/calendario-de-prazos" style="text-decoration:none"><h3>Calendário de prazos</h3><p>DAS, DASN-SIMEI, IR e opção pelo Simples.</p></a>
+          <a class="price-row" href="/limite-mei"><h3>Passei do limite do MEI?</h3><p>Digite o faturamento do ano e veja o que fazer.</p></a>
+          <a class="price-row" href="/pf-ou-pj#simulador"><h3>Simulador PF x PJ</h3><p>Compare os impostos como pessoa física e como empresa.</p></a>
+          <a class="price-row" href="/checklist-imposto-de-renda"><h3>Checklist do Imposto de Renda</h3><p>A lista de documentos para separar antes de declarar.</p></a>
+          <a class="price-row" href="/calendario-de-prazos"><h3>Calendário de prazos</h3><p>DAS, DASN-SIMEI, Imposto de Renda e opção pelo Simples.</p></a>
         </div>
       </div>
       <div>

@@ -1,13 +1,13 @@
 ---
 // Modelo único de página de serviço (seção 4.3): topo, para quem é, como funciona,
-// documentos, preço, prova, perguntas e fecho. O conteúdo vem de data/servicos.ts.
+// documentos, preço, prova, perguntas, outros serviços e fecho. O conteúdo vem de data/servicos.ts.
 import Base from '../layouts/Base.astro';
 import Icon from './Icon.astro';
 import Faq from './Faq.astro';
 import ContactBand from './ContactBand.astro';
 import { site } from '../data/site';
-import { avulsos, brl } from '../data/precos';
-import type { Servico } from '../data/servicos';
+import { avulsos, planos, brl } from '../data/precos';
+import { servicos, type Servico } from '../data/servicos';
 import { linkWhatsApp } from '../lib/whatsapp';
 
 interface Props { servico: Servico }
@@ -17,6 +17,27 @@ const itens = s.precos.map((c) => avulsos[c]).filter(Boolean); // código oculto
 const menorPreco = itens.length ? Math.min(...itens.map((i) => i.preco)) : null;
 const depoimentos = site.depoimentos.filter((d) => d.servico === s.slug);
 const url = `${site.url}/${s.slug}`;
+
+// Ferramenta grátis ligada ao serviço, mostrada no topo (quem chega com a dúvida resolve na hora e conversa depois).
+const ferramentas: Record<string, { href: string; label: string }> = {
+  'imposto-de-renda': { href: '/checklist-imposto-de-renda', label: 'Baixe o checklist de documentos do Imposto de Renda' },
+  mei: { href: '/limite-mei', label: 'Calcule se o seu MEI passou do limite' },
+  'mei-divida-ativa': { href: '/calendario-de-prazos', label: 'Veja o calendário de prazos do MEI' },
+  'abrir-empresa': { href: '/pf-ou-pj#simulador', label: 'Compare PF x PJ no simulador' },
+  'pf-ou-pj': { href: '#simulador', label: 'Ir direto para o simulador' },
+};
+const ferramenta = ferramentas[s.slug];
+
+// Outros serviços: os demais do catálogo + contabilidade mensal.
+const menorMensal = planos.some((p) => p.exibir) ? Math.min(...planos.filter((p) => p.exibir).map((p) => p.preco)) : null;
+const precoDe = (codigos: string[]) => {
+  const v = codigos.map((c) => avulsos[c]?.preco).filter((x): x is number => x !== undefined);
+  return v.length ? `a partir de ${brl(Math.min(...v))}` : null;
+};
+const outros = [
+  ...servicos.filter((o) => o.slug !== s.slug).map((o) => ({ href: `/${o.slug}`, nome: o.menu, preco: precoDe(o.precos) })),
+  ...(menorMensal !== null ? [{ href: '/contabilidade-mensal', nome: 'Contabilidade mensal', preco: `planos a partir de ${brl(menorMensal)}/mês` }] : []),
+];
 
 const schema = [
   {
@@ -50,7 +71,7 @@ const schema = [
 <Base title={s.titulo} description={s.descricao} mensagem={s.mensagem} origem={s.origem} schema={schema}>
   <section class="service-hero">
     <div class="shell">
-      <p class="breadcrumb"><a href="/">Início</a> / {s.menu}</p>
+      <nav class="breadcrumb" aria-label="Você está em"><a href="/">Início</a> / <span aria-current="page">{s.menu}</span></nav>
       <div class="service-hero-grid">
         <div>
           <h1>{s.h1}</h1>
@@ -60,12 +81,14 @@ const schema = [
             <a href="#contato" class="btn btn-outline">Prefiro ser chamado</a>
           </div>
           {site.respostaWhatsApp && <p class="response-note">{site.respostaWhatsApp}</p>}
+          {ferramenta && <a href={ferramenta.href} class="tool-hint text-link"><Icon name="arrow" size={18} />{ferramenta.label}</a>}
         </div>
         {menorPreco !== null && (
           <div class="price-box">
             {itens.some((i) => i.aPartirDe) && <small>A partir de</small>}
             <strong>{brl(menorPreco)}</strong>
             {s.prazo ? <p>Prazo: {s.prazo}</p> : <p>Orçamento fechado antes de começar.</p>}
+            {itens.length > 1 && <a href="#precos">Ver os {itens.length} itens da tabela</a>}
           </div>
         )}
       </div>
@@ -75,7 +98,7 @@ const schema = [
   <section class="section">
     <div class="shell">
       <h2>Para quem é</h2>
-      <ul class="check-list" style="margin-top:28px">
+      <ul class="check-list">
         {s.paraQuem.map((p) => <li><Icon name="check" size={22} /> {p}</li>)}
       </ul>
     </div>
@@ -84,12 +107,12 @@ const schema = [
   <section class="section section-alt">
     <div class="shell two-col">
       <div>
-        <h2 style="margin-bottom:28px">Como funciona</h2>
+        <h2>Como funciona</h2>
         <ol class="steps">{s.comoFunciona.map((p) => <li>{p}</li>)}</ol>
       </div>
       {s.documentos && (
         <div>
-          <h2 style="margin-bottom:28px">{s.documentos.titulo}</h2>
+          <h2>{s.documentos.titulo}</h2>
           <ul class="doc-list">{s.documentos.itens.map((d) => <li>{d}</li>)}</ul>
         </div>
       )}
@@ -99,7 +122,7 @@ const schema = [
   <slot />
 
   {itens.length > 0 && (
-    <section class="section">
+    <section class="section" id="precos">
       <div class="shell">
         <div class="section-head"><div><h2>Preço</h2><p>Valores de referência. O orçamento final depende do seu caso e é fechado antes de começar.</p></div></div>
         <div class="price-table">
@@ -118,7 +141,7 @@ const schema = [
   {depoimentos.length > 0 && (
     <section class="section section-alt">
       <div class="shell">
-        <h2 style="margin-bottom:28px">Quem já resolveu com a LM</h2>
+        <h2>Quem já resolveu com a LM</h2>
         <div class="quotes">
           {depoimentos.map((d) => <figure><blockquote>“{d.texto}”</blockquote><figcaption>{d.nome}</figcaption></figure>)}
         </div>
@@ -128,10 +151,21 @@ const schema = [
 
   <section class="section">
     <div class="narrow">
-      <h2 style="margin-bottom:24px">Perguntas frequentes</h2>
+      <h2>Perguntas frequentes</h2>
       <Faq perguntas={s.perguntas} />
     </div>
   </section>
+
+  {outros.length > 0 && (
+    <section class="section section-alt" aria-labelledby="outros-titulo">
+      <div class="shell">
+        <h2 id="outros-titulo">Outros serviços</h2>
+        <div class="related">
+          {outros.map((o) => <a href={o.href}><strong>{o.nome}</strong>{o.preco && <span>{o.preco}</span>}</a>)}
+        </div>
+      </div>
+    </section>
+  )}
 
   <ContactBand whatsapp={whatsapp} origem={s.origem} servico={s.servicoForm} />
 </Base>

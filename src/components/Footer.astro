@@ -12,7 +12,10 @@ const ano = new Date().getFullYear();
       <img src="/logo.png" alt="LM Contabilidade" width="104" height="58" loading="lazy" />
       <p>{site.responsavel} · {site.crc}</p>
       <p>{site.cidade}, {site.uf} · atendimento em todo o Brasil</p>
-      {site.horario && <p>{site.horario}</p>}
+      <div class="footer-links">
+        <a href="/sobre">Sobre a LM</a>
+        <a href={site.portal} target="_blank" rel="noopener">Portal do cliente ↗</a>
+      </div>
     </div>
     <div>
       <strong>Serviços</strong>
@@ -20,19 +23,18 @@ const ano = new Date().getFullYear();
       <a href="/contabilidade-mensal">Contabilidade mensal</a>
     </div>
     <div>
-      <strong>Ferramentas</strong>
+      <strong>Ferramentas grátis</strong>
       <a href="/limite-mei">Passei do limite do MEI?</a>
       <a href="/pf-ou-pj#simulador">Simulador PF x PJ</a>
-      <a href="/checklist-imposto-de-renda">Checklist do IR</a>
+      <a href="/checklist-imposto-de-renda">Checklist do Imposto de Renda</a>
       <a href="/calendario-de-prazos">Calendário de prazos</a>
     </div>
     <div>
       <strong>Contato</strong>
+      <a href={linkWhatsApp(MENSAGEM_HOME, 'site-rodape')} target="_blank" rel="noopener">WhatsApp {site.telefoneExibicao}</a>
       <a href={`mailto:${site.email}`}>{site.email}</a>
-      <a href={linkWhatsApp(MENSAGEM_HOME, 'site-rodape')} target="_blank" rel="noopener">{site.telefoneExibicao}</a>
+      {site.horario && <p>{site.horario}</p>}
       {site.instagram && <a href={site.instagram} target="_blank" rel="noopener">Instagram</a>}
-      <a href="/sobre">Sobre a LM</a>
-      <a href={site.portal} target="_blank" rel="noopener">Portal do cliente ↗</a>
     </div>
   </div>
   <div class="shell footer-bottom">

@@ -1,34 +1,51 @@
 ---
 import Icon from './Icon.astro';
 import { site } from '../data/site';
+import { servicos } from '../data/servicos';
 
 interface Props { path: string; whatsapp: string }
 const { path, whatsapp } = Astro.props;
 
+// Menu do computador: os quatro serviços mais procurados + Sobre. Os demais entram no menu do celular e no rodapé.
 const links = [
-  { href: '/imposto-de-renda', label: 'Imposto de Renda' },
-  { href: '/mei', label: 'MEI' },
-  { href: '/abrir-empresa', label: 'Abrir empresa' },
+  { href: '/imposto-de-renda', label: 'Imposto de Renda', tambem: ['/checklist-imposto-de-renda'] },
+  { href: '/mei', label: 'MEI', tambem: ['/limite-mei', '/mei-divida-ativa'] },
+  { href: '/abrir-empresa', label: 'Abrir empresa', tambem: ['/pf-ou-pj'] },
   { href: '/contabilidade-mensal', label: 'Contabilidade mensal' },
   { href: '/sobre', label: 'Sobre' },
+];
+const atual = (href: string, tambem: string[] = []) => (path === href || tambem.some((t) => path.startsWith(t)) ? 'page' : undefined);
+
+const ferramentas = [
+  { href: '/limite-mei', label: 'Passei do limite do MEI?' },
+  { href: '/pf-ou-pj#simulador', label: 'Simulador PF x PJ' },
+  { href: '/checklist-imposto-de-renda', label: 'Checklist do Imposto de Renda' },
+  { href: '/calendario-de-prazos', label: 'Calendário de prazos' },
 ];
 ---
 <header class="site-header">
   <div class="shell header-inner">
     <a href="/" class="brand" aria-label="LM Contabilidade, página inicial"><img src="/logo.png" alt="LM Contabilidade" width="86" height="48" /></a>
     <nav class="main-nav" aria-label="Navegação principal">
-      {links.map((l) => <a href={l.href} aria-current={path === l.href ? 'page' : undefined}>{l.label}</a>)}
+      {links.map((l) => <a href={l.href} aria-current={atual(l.href, l.tambem)}>{l.label}</a>)}
     </nav>
     <div class="header-actions">
       <a href={site.portal} target="_blank" rel="noopener" class="portal-link">Portal do cliente</a>
       <a href={whatsapp} target="_blank" rel="noopener" class="btn btn-whatsapp"><Icon name="whatsapp" size={18} /> WhatsApp</a>
     </div>
-    <button class="menu-button" id="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-menu"><Icon name="menu" size={26} /></button>
+    <button class="menu-button" id="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-menu">
+      <span class="icon-menu"><Icon name="menu" size={26} /></span>
+      <span class="icon-close"><Icon name="close" size={26} /></span>
+    </button>
   </div>
   <nav class="mobile-menu" id="mobile-menu" aria-label="Menu">
-    {links.map((l) => <a href={l.href}>{l.label}</a>)}
-    <a href="/pf-ou-pj">PF ou PJ</a>
-    <a href="/imovel-e-doacao">Imóvel e doação</a>
+    <span class="group" aria-hidden="true">Serviços</span>
+    {servicos.map((s) => <a href={`/${s.slug}`} aria-current={path === `/${s.slug}` ? 'page' : undefined}>{s.menu}</a>)}
+    <a href="/contabilidade-mensal" aria-current={path === '/contabilidade-mensal' ? 'page' : undefined}>Contabilidade mensal</a>
+    <span class="group" aria-hidden="true">Ferramentas grátis</span>
+    {ferramentas.map((f) => <a href={f.href} aria-current={path === f.href.replace(/#.*$/, '') ? 'page' : undefined}>{f.label}</a>)}
+    <span class="group" aria-hidden="true">LM</span>
+    <a href="/sobre" aria-current={path === '/sobre' ? 'page' : undefined}>Sobre a LM</a>
     <a href={site.portal} target="_blank" rel="noopener">Portal do cliente ↗</a>
   </nav>
 </header>

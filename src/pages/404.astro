@@ -1,16 +1,22 @@
 ---
 import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { linkWhatsApp, MENSAGEM_HOME } from '../lib/whatsapp';
+
+const whatsapp = linkWhatsApp(MENSAGEM_HOME, 'site-404');
 ---
 <Base title="Página não encontrada | LM Contabilidade" description="Página não encontrada." origem="site-404" noindex>
   <section class="section">
     <div class="narrow">
       <h1>Essa página não existe.</h1>
-      <p style="margin:18px 0 26px;color:var(--muted)">O endereço pode ter mudado. Escolha um dos serviços abaixo ou fale com a gente pelo WhatsApp.</p>
+      <p style="margin:18px 0 26px;color:var(--muted)">O endereço pode ter mudado. Escolha um dos caminhos abaixo ou fale com a gente pelo WhatsApp.</p>
       <div class="btn-row">
         <a href="/" class="btn btn-dark">Ir para o início</a>
         <a href="/imposto-de-renda" class="btn btn-outline">Imposto de Renda</a>
         <a href="/mei" class="btn btn-outline">MEI</a>
+        <a href="/contabilidade-mensal" class="btn btn-outline">Contabilidade mensal</a>
       </div>
+      <p style="margin-top:28px"><a href={whatsapp} target="_blank" rel="noopener" class="text-link"><Icon name="whatsapp" size={16} /> Conversar no WhatsApp</a></p>
     </div>
   </section>
 </Base>

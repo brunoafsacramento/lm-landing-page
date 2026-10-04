@@ -19,7 +19,7 @@ const {
       <h2>{titulo}</h2>
       <p class="lead">{texto}</p>
       <a href={whatsapp} target="_blank" rel="noopener" class="btn btn-whatsapp"><Icon name="whatsapp" /> Conversar no WhatsApp</a>
-      {site.respostaWhatsApp && <p class="response-note" style="color:#d0d8d3">{site.respostaWhatsApp}</p>}
+      {site.respostaWhatsApp && <p class="response-note">{site.respostaWhatsApp}</p>}
       <div class="contact-info">
         <span>{site.telefoneExibicao} · <a href={`mailto:${site.email}`}>{site.email}</a></span>
         {site.endereco && <span>{site.endereco.rua}, {site.endereco.bairro}, {site.cidade} – {site.uf}, {site.endereco.cep}</span>}

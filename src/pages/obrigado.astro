@@ -11,10 +11,16 @@ const whatsapp = linkWhatsApp('Olá! Acabei de deixar meu contato no site e pref
     <div class="narrow">
       <h1>Recebemos o seu contato.</h1>
       <p class="lead" style="margin:20px 0 28px;color:var(--muted);font-size:19px">
-        A gente vai chamar você pelo WhatsApp{site.horario ? ` (${site.horario.toLowerCase()})` : ''}. Se quiser, pode adiantar a conversa agora.
+        A gente vai chamar você pelo WhatsApp{site.respostaWhatsApp ? `. ${site.respostaWhatsApp}` : site.horario ? ` (${site.horario.toLowerCase()}).` : '.'}
+        A mensagem vem do número <strong style="color:var(--ink)">{site.telefoneExibicao}</strong>; salve o contato para não perder.
       </p>
-      <a href={whatsapp} target="_blank" rel="noopener" class="btn btn-whatsapp"><Icon name="whatsapp" /> Prefere adiantar? Fale agora no WhatsApp</a>
-      <p style="margin-top:28px"><a href="/" class="text-link">Voltar para o início</a></p>
+      <div class="btn-row">
+        <a href={whatsapp} target="_blank" rel="noopener" class="btn btn-whatsapp"><Icon name="whatsapp" /> Adiantar a conversa no WhatsApp</a>
+        <a href="/" class="btn btn-outline">Voltar para o início</a>
+      </div>
+      <p id="proximo-passo" style="margin-top:32px;color:var(--ink-soft)" hidden>
+        Enquanto isso, você pode separar os documentos: <a href="/checklist-imposto-de-renda" class="text-link">checklist do Imposto de Renda</a>.
+      </p>
     </div>
   </section>
 </Base>
@@ -27,7 +33,10 @@ const whatsapp = linkWhatsApp('Olá! Acabei de deixar meu contato no site e pref
       const lead = sessionStorage.getItem('lm_lead');
       if (lead) {
         sessionStorage.removeItem('lm_lead');
-        window.lmEvento?.('envio_formulario', JSON.parse(lead));
+        const dados = JSON.parse(lead) as { servico?: string };
+        window.lmEvento?.('envio_formulario', dados);
+        // Quem pediu ajuda com o IR já pode adiantar os documentos.
+        if (dados.servico?.includes('Imposto de Renda')) document.getElementById('proximo-passo')!.hidden = false;
       }
     } catch { /* armazenamento indisponível */ }
   });
