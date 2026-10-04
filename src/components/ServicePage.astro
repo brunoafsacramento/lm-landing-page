@@ -13,7 +13,7 @@ import { linkWhatsApp } from '../lib/whatsapp';
 interface Props { servico: Servico }
 const { servico: s } = Astro.props;
 const whatsapp = linkWhatsApp(s.mensagem, s.origem);
-const itens = s.precos.map((c) => avulsos[c]);
+const itens = s.precos.map((c) => avulsos[c]).filter(Boolean); // código oculto no portal: não aparece
 const menorPreco = itens.length ? Math.min(...itens.map((i) => i.preco)) : null;
 const depoimentos = site.depoimentos.filter((d) => d.servico === s.slug);
 const url = `${site.url}/${s.slug}`;
@@ -29,7 +29,7 @@ const schema = [
     areaServed: 'BR',
     provider: { '@id': `${site.url}/#lm` },
     ...(itens.length && {
-      offers: itens.map((i) => ({ '@type': 'Offer', name: i.nome, price: i.preco, priceCurrency: 'BRL', description: `A partir de ${brl(i.preco)}` })),
+      offers: itens.map((i) => ({ '@type': 'Offer', name: i.nome, price: i.preco, priceCurrency: 'BRL', description: i.aPartirDe ? `A partir de ${brl(i.preco)}` : brl(i.preco) })),
     }),
   },
   {
@@ -63,7 +63,7 @@ const schema = [
         </div>
         {menorPreco !== null && (
           <div class="price-box">
-            <small>A partir de</small>
+            {itens.some((i) => i.aPartirDe) && <small>A partir de</small>}
             <strong>{brl(menorPreco)}</strong>
             {s.prazo ? <p>Prazo: {s.prazo}</p> : <p>Orçamento fechado antes de começar.</p>}
           </div>
@@ -106,8 +106,8 @@ const schema = [
           {itens.map((i) => (
             <div class="price-row">
               <h3>{i.nome}</h3>
-              <p>{i.descricao}</p>
-              <div class="price"><small>a partir de</small><strong>{brl(i.preco)}</strong></div>
+              <p>{i.descricao}{i.prazo && <><br />Prazo: {i.prazo}</>}</p>
+              <div class="price">{i.aPartirDe && <small>a partir de</small>}<strong>{brl(i.preco)}</strong></div>
             </div>
           ))}
         </div>

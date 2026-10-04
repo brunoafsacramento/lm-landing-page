@@ -1,5 +1,10 @@
-// Checklist de documentos do IR. Rascunho: o Lucas deve substituir pela lista que já usa com os clientes.
-export const checklistIr = [
+// Checklist de documentos do IR. Editável no portal (Configurações → Site → Checklist do IR),
+// chave checklist_ir de site_conteudo. A lista abaixo é o padrão local, usado sem acesso ao Supabase.
+import { conteudo } from './cms';
+
+export type GrupoChecklist = { grupo: string; itens: string[] };
+
+const padrao: GrupoChecklist[] = [
   {
     grupo: 'Dados pessoais',
     itens: [
@@ -45,3 +50,11 @@ export const checklistIr = [
     ],
   },
 ];
+
+const banco = conteudo('checklist_ir');
+const valido = (v: unknown): v is GrupoChecklist[] =>
+  Array.isArray(v) && v.length > 0 && v.every((g) => g && typeof g.grupo === 'string' && Array.isArray(g.itens));
+
+export const checklistIr: GrupoChecklist[] = valido(banco)
+  ? banco.map((g) => ({ grupo: g.grupo, itens: g.itens.filter((i) => typeof i === 'string' && i.trim()) })).filter((g) => g.itens.length)
+  : padrao;

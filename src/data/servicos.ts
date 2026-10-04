@@ -1,9 +1,11 @@
 // Conteúdo das páginas de serviço (modelo único, seção 4.3 da revisão).
-// Textos em rascunho: o Lucas deve revisar, principalmente as perguntas frequentes.
-// Prazos ficam vazios até ele confirmar; sem prazo, o site não promete nenhum.
-// Valores legais vêm de fiscal.ts (Supabase): não escrever número de lei direto no texto.
+// Editável no portal (Configurações → Site → Páginas de serviço), tabela site_paginas_servico do Supabase.
+// Lá, os valores legais entram como marcadores, ex.: {mei.limite_anual:mil}, trocados no build (cms.ts).
+// O conteúdo abaixo é o padrão local, usado sem acesso ao Supabase ou para página que não esteja no banco.
+// Prazos ficam vazios até o Lucas confirmar; sem prazo, o site não promete nenhum.
 import { fiscal } from './fiscal';
 import { brl } from './precos';
+import { cms, aplicarMarcadores as m, type PaginaBanco } from './cms';
 
 const mil = (v: number) => `R$ ${(v / 1000).toLocaleString('pt-BR')} mil`;
 const pct = (v: number) => `${(v * 100).toLocaleString('pt-BR')}%`;
@@ -42,7 +44,7 @@ export const opcoesServico = [
   'Outro assunto',
 ];
 
-export const servicos: Servico[] = [
+const servicosPadrao: Servico[] = [
   {
     slug: 'imposto-de-renda',
     origem: 'site-ir',
@@ -254,6 +256,43 @@ export const servicos: Servico[] = [
     ],
   },
 ];
+
+function doBanco(base: Servico, b: PaginaBanco): Servico {
+  const lista = (v: unknown, padrao: string[]) =>
+    Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string' && x.trim() !== '').map(m) : padrao;
+  return {
+    ...base,
+    menu: m(b.menu),
+    titulo: m(b.titulo),
+    descricao: m(b.descricao),
+    h1: m(b.h1),
+    subtitulo: m(b.subtitulo),
+    prazo: b.prazo?.trim() ? m(b.prazo) : null,
+    mensagem: b.mensagem,
+    servicoForm: b.servico_form,
+    paraQuem: lista(b.para_quem, base.paraQuem),
+    comoFunciona: lista(b.como_funciona, base.comoFunciona),
+    documentos:
+      b.documentos && Array.isArray(b.documentos.itens) && b.documentos.itens.length
+        ? { titulo: m(b.documentos.titulo || 'O que ter em mãos'), itens: lista(b.documentos.itens, []) }
+        : undefined,
+    precos: Array.isArray(b.precos) ? b.precos.filter((c) => typeof c === 'string') : base.precos,
+    perguntas: Array.isArray(b.perguntas)
+      ? b.perguntas.filter((q) => q && q.p?.trim() && q.r?.trim()).map((q) => ({ p: m(q.p), r: m(q.r) }))
+      : base.perguntas,
+  };
+}
+
+// Só existem as páginas que têm arquivo em src/pages; o banco edita o conteúdo e a ordem.
+export const servicos: Servico[] = cms
+  ? servicosPadrao
+      .map((s) => {
+        const b = cms!.paginas.find((p) => p.slug === s.slug);
+        return { s: b ? doBanco(s, b) : s, ordem: b?.ordem ?? Number.MAX_SAFE_INTEGER };
+      })
+      .sort((a, b) => a.ordem - b.ordem)
+      .map((x) => x.s)
+  : servicosPadrao;
 
 export const servicoPorSlug = (slug: string) => {
   const s = servicos.find((x) => x.slug === slug);

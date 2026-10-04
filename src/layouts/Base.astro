@@ -6,6 +6,7 @@ import CookieBanner from '../components/CookieBanner.astro';
 import Icon from '../components/Icon.astro';
 import { site, medicao } from '../data/site';
 import { linkWhatsApp, MENSAGEM_HOME } from '../lib/whatsapp';
+import { avulsos, planos, brl } from '../data/precos';
 
 interface Props {
   title: string;
@@ -21,6 +22,7 @@ const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '') |
 const canonical = new URL(path === '/' ? '/' : path, site.url).href;
 const whatsapp = linkWhatsApp(mensagem, origem);
 const ogImage = `${site.url}/og-image.png`;
+const precosSite = [...planos.filter((p) => p.exibir).map((p) => p.preco), ...Object.values(avulsos).map((a) => a.preco)];
 const temMedicao = Boolean(medicao.ga4 || medicao.googleAds || medicao.metaPixel);
 
 const empresa = {
@@ -31,9 +33,9 @@ const empresa = {
   url: `${site.url}/`,
   logo: `${site.url}/logo.png`,
   image: ogImage,
-  telephone: '+55-11-98786-7389',
+  telephone: `+${site.whatsapp}`,
   email: site.email,
-  priceRange: 'R$ 160 – R$ 1.200',
+  ...(precosSite.length && { priceRange: `${brl(Math.min(...precosSite))} – ${brl(Math.max(...precosSite))}` }),
   address: {
     '@type': 'PostalAddress',
     ...(site.endereco && { streetAddress: site.endereco.rua, postalCode: site.endereco.cep }),
@@ -83,7 +85,7 @@ const empresa = {
   <a href={whatsapp} target="_blank" rel="noopener" class="whatsapp-float" aria-label="Conversar no WhatsApp"><Icon name="whatsapp" size={28} /><span>WhatsApp</span></a>
   <div class="mobile-bar">
     <a href={whatsapp} target="_blank" rel="noopener" class="btn btn-whatsapp"><Icon name="whatsapp" /> WhatsApp</a>
-    {site.aceitaLigacao && <a href="tel:+5511987867389" class="btn btn-outline"><Icon name="phone" /> Ligar</a>}
+    {site.aceitaLigacao && <a href={`tel:+${site.whatsapp}`} class="btn btn-outline"><Icon name="phone" /> Ligar</a>}
   </div>
   {temMedicao && <CookieBanner />}
 

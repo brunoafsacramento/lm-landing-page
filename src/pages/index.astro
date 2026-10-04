@@ -9,8 +9,10 @@ import { avulsos, planos, brl } from '../data/precos';
 import { linkWhatsApp, MENSAGEM_HOME } from '../lib/whatsapp';
 
 const whatsapp = linkWhatsApp(MENSAGEM_HOME, 'site-home');
+// Itens ocultos no portal somem daqui (avulsos[código] fica indefinido).
 const menorMensal = Math.min(...planos.filter((p) => p.exibir).map((p) => p.preco));
-const aPartirDe = (codigos: string[]) => Math.min(...codigos.map((c) => avulsos[c].preco));
+const precosDe = (codigos: string[]) => codigos.map((c) => avulsos[c]?.preco).filter((v): v is number => v !== undefined);
+const aPartirDe = (codigos: string[]) => (precosDe(codigos).length ? brl(Math.min(...precosDe(codigos))) : null);
 
 const atalhos = [
   { href: '/imposto-de-renda', label: 'Meu IR' },
@@ -20,15 +22,15 @@ const atalhos = [
 ];
 
 const resumo = [
-  { nome: 'Imposto de Renda', preco: brl(avulsos.IR.preco) },
-  { nome: 'MEI: abertura ou baixa', preco: brl(avulsos.MEI.preco) },
-  { nome: 'Abertura de empresa', preco: brl(avulsos.ABR.preco) },
-  { nome: 'Contabilidade mensal', preco: `${brl(menorMensal)}/mês` },
-];
+  { nome: 'Imposto de Renda', preco: aPartirDe(['IR']) },
+  { nome: 'MEI: abertura ou baixa', preco: aPartirDe(['MEI']) },
+  { nome: 'Abertura de empresa', preco: aPartirDe(['ABR']) },
+  { nome: 'Contabilidade mensal', preco: Number.isFinite(menorMensal) ? `${brl(menorMensal)}/mês` : null },
+].filter((r) => r.preco);
 
 const cartoes = [
-  ...servicos.map((s) => ({ href: `/${s.slug}`, nome: s.menu, texto: s.subtitulo, preco: s.precos.length ? brl(aPartirDe(s.precos)) : null, sufixo: '' })),
-  { href: '/contabilidade-mensal', nome: 'Contabilidade mensal', texto: 'Planos para PF, MEI, ME e EPP, com o que está incluído e os adicionais na tabela.', preco: brl(menorMensal), sufixo: '/mês' },
+  ...servicos.map((s) => ({ href: `/${s.slug}`, nome: s.menu, texto: s.subtitulo, preco: aPartirDe(s.precos), sufixo: '' })),
+  { href: '/contabilidade-mensal', nome: 'Contabilidade mensal', texto: 'Planos para PF, MEI, ME e EPP, com o que está incluído e os adicionais na tabela.', preco: Number.isFinite(menorMensal) ? brl(menorMensal) : null, sufixo: '/mês' },
 ];
 
 const perguntas = [
@@ -38,7 +40,7 @@ const perguntas = [
   servicoPorSlug('abrir-empresa').perguntas[0],
   servicoPorSlug('pf-ou-pj').perguntas[0],
   { p: 'Vocês atendem fora de São Paulo?', r: 'Sim. O atendimento é pelo WhatsApp, e-mail e portal do cliente, então atendemos clientes de todo o Brasil.' },
-];
+].filter(Boolean); // pergunta removida no portal não quebra a página
 
 const faqSchema = {
   '@context': 'https://schema.org',
@@ -48,7 +50,7 @@ const faqSchema = {
 ---
 <Base
   title="Contador em São Paulo para empresas, MEIs e pessoas físicas | LM Contabilidade"
-  description="Imposto de Renda, MEI, abertura de empresa e contabilidade mensal em São Paulo, com preço a partir de R$ 160. Fale com a LM Contabilidade pelo WhatsApp."
+  description={`Imposto de Renda, MEI, abertura de empresa e contabilidade mensal em São Paulo, com preço a partir de ${brl(Number.isFinite(menorMensal) ? menorMensal : 160)}. Fale com a LM Contabilidade pelo WhatsApp.`}
   schema={[faqSchema]}
 >
   <section class="hero">
